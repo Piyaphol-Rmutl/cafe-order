@@ -39,6 +39,7 @@ dev_dependencies:
   sqflite_common_ffi: ^2.4.7 # SQLite บนเครื่องคอมพิวเตอร์สำหรับ Unit Test
   shelf: ^1.4.3 # เซิร์ฟเวอร์จำลอง tool/mock_server.dart
   fake_cloud_firestore: ^4.5.0 # Firestore ในหน่วยความจำสำหรับทดสอบ
+  mocktail: ^1.0.4 # สร้าง Mock ของ Repository (สัปดาห์ 14)
 
 flutter:
   uses-material-design: true

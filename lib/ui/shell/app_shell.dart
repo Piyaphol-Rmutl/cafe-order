@@ -22,7 +22,11 @@ class AppShell extends StatelessWidget {
     return i < 0 ? 0 : i;
   }
 
-  void _go(BuildContext context, int i) => context.go(_paths[i]);
+  void _go(BuildContext context, int i) {
+    // สัปดาห์ 14 (พบจาก Integration Test): SnackBar ค้างจากแท็บเดิมบังปุ่มสั่งซื้อ
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    context.go(_paths[i]);
+  }
 
   @override
   Widget build(BuildContext context) {

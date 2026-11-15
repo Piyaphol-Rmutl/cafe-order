@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:http/http.dart' as http;
 
@@ -43,8 +44,16 @@ class ApiService {
 
   /// กำหนดเวลา และแปลงข้อผิดพลาดของเครือข่ายเป็น ApiException
   Future<http.Response> _send(Future<http.Response> Function() request) async {
+    final watch = Stopwatch()..start();
     try {
-      return await request().timeout(timeout);
+      final res = await request().timeout(timeout);
+      // สัปดาห์ 14: บันทึกทุกคำร้องขอ (ดูใน DevTools → Logging และ Network)
+      developer.log(
+        '${res.request?.method} ${res.request?.url} → ${res.statusCode} '
+        '(${watch.elapsedMilliseconds} ms)',
+        name: 'cafe.api',
+      );
+      return res;
     } on TimeoutException {
       throw const ApiException('เซิร์ฟเวอร์ไม่ตอบภายในเวลาที่กำหนด');
     } on http.ClientException {

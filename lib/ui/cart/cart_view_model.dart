@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -47,9 +49,20 @@ class CartViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       final order = await _orders.placeOrder([..._items]);
+      // สัปดาห์ 14: log ไปที่ DevTools → Logging (กรองด้วยชื่อ cafe.cart ได้)
+      developer.log(
+        'สั่งซื้อ ${order.id} รวม ${order.total} บาท',
+        name: 'cafe.cart',
+      );
       _items.clear();
       return order;
-    } catch (e) {
+    } catch (e, stack) {
+      developer.log(
+        'สั่งซื้อไม่สำเร็จ',
+        name: 'cafe.cart',
+        error: e,
+        stackTrace: stack,
+      );
       _error = e;
       return null;
     } finally {

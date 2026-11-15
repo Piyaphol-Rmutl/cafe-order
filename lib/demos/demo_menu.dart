@@ -12,6 +12,7 @@ import 'w08_listenable_builder.dart';
 import 'w08_inherited.dart';
 import 'w13_device_channel.dart';
 import 'w13_sensors.dart';
+import 'w14_debugging.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -74,6 +75,11 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w13',
     title: 'เซนเซอร์ความเร่ง (sensors_plus)',
     builder: (_) => const SensorsDemo(),
+  ),
+  (
+    week: 'w14',
+    title: 'ฝึกดีบัก: ตะกร้าที่มีบั๊ก',
+    builder: (_) => const DebuggingDemo(),
   ),
 ];
 
