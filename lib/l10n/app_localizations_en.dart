@@ -129,4 +129,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderFailed => 'Order failed, please try again';
+
+  @override
+  String get signIn => 'Sign in';
+
+  @override
+  String get signUp => 'Sign up';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get displayName => 'Display name';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get noAccount => 'No account? Sign up';
+
+  @override
+  String get haveAccount => 'Have an account? Sign in';
+
+  @override
+  String get barista => 'Barista';
+
+  @override
+  String get orderStatus => 'Order status';
+
+  @override
+  String get trackOrder => 'Track order';
+
+  @override
+  String get noActiveOrders => 'No active orders';
+
+  @override
+  String get orderNotFound => 'Order not found';
+
+  @override
+  String get orderStatusError => 'Could not load the order status';
 }

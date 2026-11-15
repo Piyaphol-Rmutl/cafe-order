@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/repositories/live_order_repository.dart';
 import 'cart_view_model.dart';
 import '../l10n_ext.dart';
 
@@ -32,7 +33,15 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
-    if (context.mounted) context.go('/menu');
+    if (!context.mounted) return;
+    // สัปดาห์ 12: ถ้ามีสถานะเรียลไทม์ เปิดหน้าติดตามสถานะซ้อนด้วย push
+    // (go จะแทนที่สแตก หน้าสถานะจึงไม่มีปุ่มย้อนกลับ)
+    final live = context.read<LiveOrderRepository?>();
+    if (live == null) {
+      context.go('/menu');
+    } else {
+      context.push('/status/${order.id}');
+    }
   }
 
   @override

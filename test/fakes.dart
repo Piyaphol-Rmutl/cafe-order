@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/data/repositories/branch_repository.dart';
 import 'package:cafe_order/data/repositories/favorite_repository.dart';
+import 'package:cafe_order/data/repositories/live_order_repository.dart';
 import 'package:cafe_order/data/repositories/menu_repository.dart';
 import 'package:cafe_order/data/repositories/order_repository.dart';
+import 'package:cafe_order/data/services/api_exception.dart';
+import 'package:cafe_order/data/services/auth_service.dart';
 
 /// Repository ปลอมสำหรับทดสอบ: ทำงานในหน่วยความจำ ไม่มีปลั๊กอิน ไม่มีหน่วงเวลา
 
@@ -61,5 +66,107 @@ class FakeBranchRepository implements BranchRepository {
   Future<List<Branch>> fetchBranches() async {
     if (fail) throw Exception('offline');
     return sampleBranches;
+  }
+}
+
+/// AuthService ปลอม: เริ่มต้นเข้าสู่ระบบอยู่แล้ว (เทสต์เดิมจึงผ่าน AuthGate ได้)
+class FakeAuthService implements AuthService {
+  FakeAuthService([this._user = customer]);
+
+  static const customer = AppUser(
+    uid: 'u1',
+    email: 'ton@student.test',
+    name: 'ต้น',
+  );
+  static const barista = AppUser(
+    uid: 'b1',
+    email: 'ploy@barista.test',
+    name: 'พลอย',
+  );
+
+  AppUser? _user;
+  final _changes = StreamController<AppUser?>.broadcast();
+  final Map<String, String> passwords = {'ton@student.test': 'secret123'};
+
+  @override
+  AppUser? get currentUser => _user;
+
+  @override
+  Stream<AppUser?> userChanges() => _changes.stream;
+
+  void _set(AppUser? user) {
+    _user = user;
+    _changes.add(user);
+  }
+
+  @override
+  Future<AppUser> signIn({
+    required String email,
+    required String password,
+  }) async {
+    if (passwords[email] != password) {
+      throw const ApiException('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+    }
+    final user = AppUser(
+      uid: email,
+      email: email,
+      name: email.split('@').first,
+    );
+    _set(user);
+    return user;
+  }
+
+  @override
+  Future<AppUser> signUp({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    passwords[email] = password;
+    final user = AppUser(uid: email, email: email, name: name);
+    _set(user);
+    return user;
+  }
+
+  @override
+  Future<void> signOut() async => _set(null);
+}
+
+/// คำสั่งซื้อแบบเรียลไทม์ในหน่วยความจำ (ใช้แทน Firestore ในเทสต์วิดเจ็ต)
+class InMemoryLiveOrders extends InMemoryOrderRepository
+    implements LiveOrderRepository {
+  final _changes = StreamController<void>.broadcast();
+
+  Stream<T> _watch<T>(T Function() read) async* {
+    yield read();
+    await for (final _ in _changes.stream) {
+      yield read();
+    }
+  }
+
+  @override
+  Future<Order> placeOrder(List<OrderItem> items) async {
+    final order = await super.placeOrder(items);
+    _changes.add(null);
+    return order;
+  }
+
+  @override
+  Stream<Order?> watchOrder(String id) =>
+      _watch(() => orders.where((o) => o.id == id).firstOrNull);
+
+  @override
+  Stream<List<Order>> watchActive() => _watch(
+    () => [
+      for (final o in orders.reversed)
+        if (o.status != OrderStatus.completed) o,
+    ],
+  );
+
+  @override
+  Future<void> updateStatus(String id, OrderStatus status) async {
+    final i = orders.indexWhere((o) => o.id == id);
+    orders[i] = orders[i].copyWith(status: status);
+    _changes.add(null);
   }
 }

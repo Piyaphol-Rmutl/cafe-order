@@ -172,8 +172,11 @@ void main() {
       branches.fail = false;
       await tester.tap(retry);
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.text('สาขาหอสมุด'), 200,
-          scrollable: find.byType(Scrollable).first);
+      await tester.scrollUntilVisible(
+        find.text('สาขาหอสมุด'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('สาขาหอสมุด'), findsOneWidget);
     });
   });

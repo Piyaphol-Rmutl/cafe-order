@@ -32,5 +32,19 @@
   "favorite": "Favorite",
   "loadError": "Could not load the menu",
   "retry": "Retry",
-  "orderFailed": "Order failed, please try again"
+  "orderFailed": "Order failed, please try again",
+  "signIn": "Sign in",
+  "signUp": "Sign up",
+  "email": "Email",
+  "password": "Password",
+  "displayName": "Display name",
+  "signOut": "Sign out",
+  "noAccount": "No account? Sign up",
+  "haveAccount": "Have an account? Sign in",
+  "barista": "Barista",
+  "orderStatus": "Order status",
+  "trackOrder": "Track order",
+  "noActiveOrders": "No active orders",
+  "orderNotFound": "Order not found",
+  "orderStatusError": "Could not load the order status"
 }

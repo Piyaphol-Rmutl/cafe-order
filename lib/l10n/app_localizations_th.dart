@@ -128,4 +128,46 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get orderFailed => 'สั่งซื้อไม่สำเร็จ กรุณาลองใหม่';
+
+  @override
+  String get signIn => 'เข้าสู่ระบบ';
+
+  @override
+  String get signUp => 'สมัครสมาชิก';
+
+  @override
+  String get email => 'อีเมล';
+
+  @override
+  String get password => 'รหัสผ่าน';
+
+  @override
+  String get displayName => 'ชื่อที่แสดง';
+
+  @override
+  String get signOut => 'ออกจากระบบ';
+
+  @override
+  String get noAccount => 'ยังไม่มีบัญชี? สมัครสมาชิก';
+
+  @override
+  String get haveAccount => 'มีบัญชีแล้ว? เข้าสู่ระบบ';
+
+  @override
+  String get barista => 'บาริสต้า';
+
+  @override
+  String get orderStatus => 'สถานะคำสั่งซื้อ';
+
+  @override
+  String get trackOrder => 'ติดตามสถานะ';
+
+  @override
+  String get noActiveOrders => 'ไม่มีคำสั่งซื้อที่รอทำ';
+
+  @override
+  String get orderNotFound => 'ไม่พบคำสั่งซื้อ';
+
+  @override
+  String get orderStatusError => 'โหลดสถานะคำสั่งซื้อไม่สำเร็จ';
 }

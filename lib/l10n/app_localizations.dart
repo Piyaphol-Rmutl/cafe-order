@@ -295,6 +295,90 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'สั่งซื้อไม่สำเร็จ กรุณาลองใหม่'**
   String get orderFailed;
+
+  /// No description provided for @signIn.
+  ///
+  /// In th, this message translates to:
+  /// **'เข้าสู่ระบบ'**
+  String get signIn;
+
+  /// No description provided for @signUp.
+  ///
+  /// In th, this message translates to:
+  /// **'สมัครสมาชิก'**
+  String get signUp;
+
+  /// No description provided for @email.
+  ///
+  /// In th, this message translates to:
+  /// **'อีเมล'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In th, this message translates to:
+  /// **'รหัสผ่าน'**
+  String get password;
+
+  /// No description provided for @displayName.
+  ///
+  /// In th, this message translates to:
+  /// **'ชื่อที่แสดง'**
+  String get displayName;
+
+  /// No description provided for @signOut.
+  ///
+  /// In th, this message translates to:
+  /// **'ออกจากระบบ'**
+  String get signOut;
+
+  /// No description provided for @noAccount.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่มีบัญชี? สมัครสมาชิก'**
+  String get noAccount;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In th, this message translates to:
+  /// **'มีบัญชีแล้ว? เข้าสู่ระบบ'**
+  String get haveAccount;
+
+  /// No description provided for @barista.
+  ///
+  /// In th, this message translates to:
+  /// **'บาริสต้า'**
+  String get barista;
+
+  /// No description provided for @orderStatus.
+  ///
+  /// In th, this message translates to:
+  /// **'สถานะคำสั่งซื้อ'**
+  String get orderStatus;
+
+  /// No description provided for @trackOrder.
+  ///
+  /// In th, this message translates to:
+  /// **'ติดตามสถานะ'**
+  String get trackOrder;
+
+  /// No description provided for @noActiveOrders.
+  ///
+  /// In th, this message translates to:
+  /// **'ไม่มีคำสั่งซื้อที่รอทำ'**
+  String get noActiveOrders;
+
+  /// No description provided for @orderNotFound.
+  ///
+  /// In th, this message translates to:
+  /// **'ไม่พบคำสั่งซื้อ'**
+  String get orderNotFound;
+
+  /// No description provided for @orderStatusError.
+  ///
+  /// In th, this message translates to:
+  /// **'โหลดสถานะคำสั่งซื้อไม่สำเร็จ'**
+  String get orderStatusError;
 }
 
 class _AppLocalizationsDelegate

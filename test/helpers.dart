@@ -24,6 +24,8 @@ Future<Widget> cafeApp({
   InMemoryOrderRepository? orders,
   InMemoryFavoriteRepository? favorites,
   FakeBranchRepository? branches,
+  FakeAuthService? auth,
+  InMemoryLiveOrders? live,
   Map<String, Object> prefs = const {},
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
@@ -31,7 +33,9 @@ Future<Widget> cafeApp({
   return buildApp(
     AppDependencies(
       menu: menu ?? FakeMenuRepository(),
-      orders: orders ?? InMemoryOrderRepository(),
+      orders: live ?? orders ?? InMemoryOrderRepository(),
+      live: live,
+      auth: auth ?? FakeAuthService(),
       favorites: favorites ?? InMemoryFavoriteRepository(),
       settings: SettingsRepository(prefsService),
       branches: branches ?? FakeBranchRepository(),

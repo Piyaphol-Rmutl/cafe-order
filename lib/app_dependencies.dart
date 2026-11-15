@@ -3,10 +3,13 @@ import 'package:provider/provider.dart';
 
 import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
+import 'data/repositories/live_order_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
 import 'data/repositories/settings_repository.dart';
+import 'data/services/auth_service.dart';
 import 'main.dart';
+import 'ui/auth/auth_view_model.dart';
 import 'ui/cart/cart_view_model.dart';
 import 'ui/menu/menu_view_model.dart';
 import 'ui/settings/settings_view_model.dart';
@@ -19,6 +22,8 @@ class AppDependencies {
     required this.favorites,
     required this.settings,
     required this.branches,
+    required this.auth,
+    this.live,
   });
 
   final MenuRepository menu;
@@ -26,6 +31,8 @@ class AppDependencies {
   final FavoriteRepository favorites;
   final SettingsRepository settings;
   final BranchRepository branches;
+  final AuthService auth;
+  final LiveOrderRepository? live; // null = ไม่มีสถานะเรียลไทม์
 }
 
 /// ประกอบแอป: วาง Repository และ ViewModel ระดับแอปไว้เหนือ CafeOrderApp
@@ -36,6 +43,8 @@ Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
       Provider<MenuRepository>.value(value: deps.menu),
       Provider<OrderRepository>.value(value: deps.orders),
       Provider<BranchRepository>.value(value: deps.branches),
+      Provider<LiveOrderRepository?>.value(value: deps.live),
+      ChangeNotifierProvider(create: (_) => AuthViewModel(deps.auth)),
       // ชั้น ViewModel ระดับแอป
       ChangeNotifierProvider(
         create: (_) => MenuViewModel(deps.menu, deps.favorites)..load(),

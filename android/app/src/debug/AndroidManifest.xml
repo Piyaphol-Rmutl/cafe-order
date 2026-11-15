@@ -4,4 +4,6 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- สัปดาห์ 12: ให้ Firebase SDK ติดต่อ Emulator ผ่าน HTTP ได้ (debug เท่านั้น) -->
+    <application android:networkSecurityConfig="@xml/network_security_config" />
 </manifest>

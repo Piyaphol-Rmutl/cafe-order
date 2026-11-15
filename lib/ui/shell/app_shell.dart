@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../demos/demo_menu.dart';
+import '../auth/auth_view_model.dart';
 import '../cart/cart_view_model.dart';
 import '../l10n_ext.dart';
 
@@ -96,6 +97,7 @@ class _AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthViewModel>();
     return Drawer(
       child: ListView(
         children: [
@@ -122,6 +124,25 @@ class _AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               context.push('/settings');
+            },
+          ),
+          // สัปดาห์ 12: เมนูบาริสต้าเห็นเฉพาะบัญชีบาริสต้า
+          if (auth.isBarista)
+            ListTile(
+              leading: const Icon(Icons.coffee_maker),
+              title: Text(context.l10n.barista),
+              onTap: () {
+                Navigator.of(context).pop();
+                context.push('/barista');
+              },
+            ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: Text(context.l10n.signOut),
+            subtitle: Text(auth.user?.email ?? ''),
+            onTap: () {
+              Navigator.of(context).pop();
+              auth.signOut(); // router จะ redirect ไป /login เอง
             },
           ),
           ListTile(

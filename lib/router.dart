@@ -3,24 +3,52 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repositories/order_repository.dart';
+import 'ui/auth/auth_view_model.dart';
+import 'ui/auth/login_page.dart';
+import 'ui/barista/barista_page.dart';
 import 'ui/cart/cart_page.dart';
 import 'ui/customize/customize_page.dart';
 import 'ui/menu/menu_page.dart';
 import 'ui/menu/menu_view_model.dart';
 import 'ui/orders/order_history_page.dart';
 import 'ui/orders/order_history_view_model.dart';
+import 'ui/orders/order_status_page.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell/app_shell.dart';
 import 'ui/shop/shop_page.dart';
 
 /// สร้างตัวจัดเส้นทาง (ฟังก์ชัน จึงสร้างใหม่ได้ในแต่ละ Widget Test)
 /// สัปดาห์ 8: สถานะอยู่ใน Provider แล้ว router จึงไม่ต้องส่งต่อสถานะใด ๆ
-GoRouter createRouter({String initialLocation = '/menu'}) {
+/// สัปดาห์ 12: AuthGate ที่ราก — ยังไม่เข้าสู่ระบบถูกส่งไป /login เสมอ
+GoRouter createRouter({
+  required AuthViewModel auth,
+  String initialLocation = '/menu',
+}) {
   final rootKey = GlobalKey<NavigatorState>();
   return GoRouter(
     navigatorKey: rootKey,
     initialLocation: initialLocation,
+    refreshListenable: auth, // เข้า/ออกจากระบบ → ประเมิน redirect ใหม่
+    redirect: (context, state) {
+      final atLogin = state.matchedLocation == '/login';
+      if (!auth.isSignedIn) return atLogin ? null : '/login';
+      if (atLogin) return '/menu';
+      if (state.matchedLocation == '/barista' && !auth.isBarista) {
+        return '/menu';
+      }
+      return null; // ไม่เปลี่ยนเส้นทาง
+    },
     routes: [
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/status/:id',
+        builder: (context, state) =>
+            OrderStatusPage(orderId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/barista',
+        builder: (context, state) => const BaristaPage(),
+      ),
       GoRoute(path: '/', redirect: (_, _) => '/menu'),
       GoRoute(
         path: '/orders',

@@ -6,16 +6,20 @@ import 'app_dependencies.dart';
 import 'config.dart';
 import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
+import 'data/repositories/firestore_order_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
 import 'data/repositories/settings_repository.dart';
 import 'data/services/api_service.dart';
+import 'data/services/auth_service.dart';
 import 'data/services/database_service.dart';
 import 'data/services/file_service.dart';
+import 'data/services/firebase_setup.dart';
 import 'data/services/prefs_service.dart';
 import 'l10n/app_localizations.dart';
 import 'router.dart';
 import 'theme.dart';
+import 'ui/auth/auth_view_model.dart';
 import 'ui/settings/settings_view_model.dart';
 
 /// จุดประกอบ (composition root): สร้าง Service → Repository ที่นี่ที่เดียว
@@ -26,13 +30,22 @@ Future<void> main() async {
   final prefs = await PrefsService.create();
   final files = FileService();
   final api = ApiService(baseUrl: apiBaseUrl); // สัปดาห์ 11
+  final (firebaseAuth, firestore) = await initFirebase(); // สัปดาห์ 12
+  final auth = FirebaseAuthService(firebaseAuth);
+  final orders = FirestoreOrderRepository(
+    firestore,
+    auth,
+    LocalOrderRepository(db, files),
+  );
 
   runApp(
     buildApp(
       AppDependencies(
         // สลับ implementation ที่นี่ที่เดียว UI ไม่ต้องแก้
         menu: ApiMenuRepository(api),
-        orders: ApiOrderRepository(api, LocalOrderRepository(db, files)),
+        orders: orders, // สัปดาห์ 11 ใช้ ApiOrderRepository
+        live: orders,
+        auth: auth,
         branches: ApiBranchRepository(api),
         favorites: SqliteFavoriteRepository(db),
         settings: SettingsRepository(prefs),
@@ -53,6 +66,7 @@ class CafeOrderApp extends StatefulWidget {
 
 class _CafeOrderAppState extends State<CafeOrderApp> {
   late final GoRouter _router = createRouter(
+    auth: context.read<AuthViewModel>(), // สัปดาห์ 12: AuthGate
     initialLocation: widget.initialLocation,
   );
 
