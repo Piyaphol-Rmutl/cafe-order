@@ -1,0 +1,11 @@
+name: cafe_core
+description: โมเดลและตรรกะของร้าน Café Order (Dart ล้วน ใช้ได้ทั้งคอนโซลและ Flutter)
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.5
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
