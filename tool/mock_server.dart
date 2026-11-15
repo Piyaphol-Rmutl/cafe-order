@@ -9,6 +9,8 @@
 //   GET  /orders/{id}   คำสั่งซื้อตามรหัส
 //   POST /devices       ลงทะเบียนเครื่อง ได้โทเค็น (สัปดาห์ 15)
 //   GET  /me/points     แต้มสะสม ต้องแนบ Authorization: Bearer <โทเค็น>
+//   POST /recommend     แนะนำเมนู (สัปดาห์ 16: จำลองบริการ AI ฝั่งเซิร์ฟเวอร์
+//                       คีย์ของผู้ให้บริการ AI อยู่ที่เซิร์ฟเวอร์ ไม่อยู่ในแอป)
 import 'dart:convert';
 import 'dart:io';
 
@@ -60,6 +62,15 @@ Handler createHandler({Duration delay = Duration.zero, bool fail = false}) {
         final order = Order(id: id, items: items);
         orders[id] = order;
         return _json(201, order.toJson());
+      case 'POST /recommend':
+        final body = jsonDecode(await req.readAsString()) as Map;
+        final result = recommendByRules(
+          menu: sampleMenu,
+          hour: body['hour'] as int? ?? 12,
+          orderCounts: (body['orderCounts'] as Map? ?? {}).cast<String, int>(),
+          favorites: {...(body['favorites'] as List? ?? []).cast<String>()},
+        );
+        return _json(200, result.toJson());
       case 'POST /devices':
         final token = 'dev-${DateTime.now().microsecondsSinceEpoch}';
         devices[token] = 120; // แต้มตั้งต้นสำหรับสาธิต

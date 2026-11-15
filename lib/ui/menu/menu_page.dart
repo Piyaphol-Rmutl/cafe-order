@@ -7,6 +7,7 @@ import '../cart/cart_view_model.dart';
 import '../widgets/brewing_indicator.dart';
 import '../customize/customize_page.dart';
 import '../l10n_ext.dart';
+import '../recommendation/recommendation_card.dart';
 import 'menu_list.dart';
 import 'menu_view_model.dart';
 
@@ -61,6 +62,12 @@ class MenuPage extends StatelessWidget {
       length: tabs.length,
       child: Column(
         children: [
+          // สัปดาห์ 16: การ์ดแนะนำเมนู (AI จำลอง)
+          RecommendationCard(
+            menu: vm.items,
+            favorites: {for (final m in vm.favorites) m.id},
+            onOpen: (item) => _open(context, item),
+          ),
           TabBar(
             isScrollable: true,
             tabs: [for (final (label, _) in tabs) Tab(text: label)],

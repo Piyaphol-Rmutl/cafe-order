@@ -10,4 +10,5 @@ export 'src/order.dart';
 export 'src/order_item.dart';
 export 'src/priced.dart';
 export 'src/promotion.dart';
+export 'src/recommendation.dart';
 export 'src/sample_menu.dart';

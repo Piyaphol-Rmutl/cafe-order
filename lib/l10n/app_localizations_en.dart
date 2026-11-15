@@ -212,4 +212,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String points(int points) {
     return '$points points';
   }
+
+  @override
+  String get forYou => 'Picked for you';
+
+  @override
+  String get aiSimulated => 'AI (simulated)';
+
+  @override
+  String get tryIt => 'Try it';
 }

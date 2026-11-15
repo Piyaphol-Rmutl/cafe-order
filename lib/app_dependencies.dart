@@ -12,6 +12,7 @@ import 'data/repositories/settings_repository.dart';
 import 'data/services/auth_service.dart';
 import 'data/services/location_service.dart';
 import 'data/services/photo_service.dart';
+import 'data/services/recommender.dart';
 import 'main.dart';
 import 'ui/auth/auth_view_model.dart';
 import 'ui/cart/cart_view_model.dart';
@@ -31,6 +32,7 @@ class AppDependencies {
     required this.photos,
     required this.reviews,
     required this.loyalty,
+    required this.recommender,
     this.live,
   });
 
@@ -44,6 +46,7 @@ class AppDependencies {
   final PhotoService photos;
   final ReviewRepository reviews;
   final LoyaltyRepository loyalty; // สัปดาห์ 15
+  final MenuRecommender recommender; // สัปดาห์ 16
   final LiveOrderRepository? live; // null = ไม่มีสถานะเรียลไทม์
 }
 
@@ -60,6 +63,7 @@ Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
       Provider<PhotoService>.value(value: deps.photos),
       Provider<ReviewRepository>.value(value: deps.reviews),
       Provider<LoyaltyRepository>.value(value: deps.loyalty),
+      Provider<MenuRecommender>.value(value: deps.recommender),
       ChangeNotifierProvider(create: (_) => AuthViewModel(deps.auth)),
       // ชั้น ViewModel ระดับแอป
       ChangeNotifierProvider(

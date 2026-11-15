@@ -1,7 +1,7 @@
 name: cafe_order
 description: "ENGCE307 แอปประกอบการบรรยาย Café Order"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+16
 
 environment:
   sdk: ^3.13.5

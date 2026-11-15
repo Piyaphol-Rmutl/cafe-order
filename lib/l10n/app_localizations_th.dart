@@ -211,4 +211,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String points(int points) {
     return 'แต้มสะสม $points แต้ม';
   }
+
+  @override
+  String get forYou => 'แนะนำสำหรับคุณ';
+
+  @override
+  String get aiSimulated => 'AI (จำลอง)';
+
+  @override
+  String get tryIt => 'ลองเลย';
 }

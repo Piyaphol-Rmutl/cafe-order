@@ -69,8 +69,12 @@ class ApiService {
     return token;
   }
 
-  /// POST ส่ง JSON แล้วคืน JSON ที่ได้ (คาดรหัส 201 Created)
-  Future<Object?> postJson(String path, Object body) async {
+  /// POST ส่ง JSON แล้วคืน JSON ที่ได้ (ค่าตั้งต้นคาดรหัส 201 Created)
+  Future<Object?> postJson(
+    String path,
+    Object body, {
+    int expected = 201,
+  }) async {
     final res = await _send(
       () => _client.post(
         Uri.parse('$baseUrl$path'),
@@ -78,7 +82,7 @@ class ApiService {
         body: jsonEncode(body),
       ),
     );
-    return _decode(res, expected: 201);
+    return _decode(res, expected: expected);
   }
 
   /// กำหนดเวลา และแปลงข้อผิดพลาดของเครือข่ายเป็น ApiException

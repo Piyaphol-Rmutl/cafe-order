@@ -137,4 +137,45 @@ void main() {
       expect(sorted.last.$1.id, 'library');
     });
   });
+
+  group('แนะนำเมนูแบบกฎ (สัปดาห์ 16)', () {
+    test('สั่งบ่อย > รายการโปรด > ช่วงเวลา', () {
+      expect(
+        recommendByRules(
+          menu: sampleMenu,
+          hour: 9,
+          orderCounts: {'mocha': 3, 'latte': 1},
+          favorites: {'matcha'},
+        ).item.id,
+        'mocha',
+      );
+      expect(
+        recommendByRules(
+          menu: sampleMenu,
+          hour: 9,
+          favorites: {'matcha'},
+        ).item.id,
+        'matcha',
+      );
+      expect(
+        recommendByRules(menu: sampleMenu, hour: 8).item.category,
+        MenuCategory.coffee,
+      );
+      expect(
+        recommendByRules(menu: sampleMenu, hour: 14).item.id,
+        'lemon_soda',
+      );
+      expect(
+        recommendByRules(menu: sampleMenu, hour: 19).item.category,
+        MenuCategory.tea,
+      );
+    });
+
+    test('toJson/fromJson', () {
+      final r = recommendByRules(menu: sampleMenu, hour: 8);
+      final copy = Recommendation.fromJson(r.toJson());
+      expect(copy.item, r.item);
+      expect(copy.reason, r.reason);
+    });
+  });
 }

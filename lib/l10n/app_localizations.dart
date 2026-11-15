@@ -451,6 +451,24 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'แต้มสะสม {points} แต้ม'**
   String points(int points);
+
+  /// No description provided for @forYou.
+  ///
+  /// In th, this message translates to:
+  /// **'แนะนำสำหรับคุณ'**
+  String get forYou;
+
+  /// No description provided for @aiSimulated.
+  ///
+  /// In th, this message translates to:
+  /// **'AI (จำลอง)'**
+  String get aiSimulated;
+
+  /// No description provided for @tryIt.
+  ///
+  /// In th, this message translates to:
+  /// **'ลองเลย'**
+  String get tryIt;
 }
 
 class _AppLocalizationsDelegate

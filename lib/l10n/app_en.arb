@@ -58,5 +58,8 @@
   "comment": "Comment",
   "saveReview": "Save review",
   "reviewSaved": "Review saved",
-  "points": "{points} points"
+  "points": "{points} points",
+  "forYou": "Picked for you",
+  "aiSimulated": "AI (simulated)",
+  "tryIt": "Try it"
 }

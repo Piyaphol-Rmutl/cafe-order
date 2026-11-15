@@ -5,6 +5,7 @@ import 'package:cafe_order/data/repositories/review_repository.dart';
 import 'package:cafe_order/data/repositories/settings_repository.dart';
 import 'package:cafe_order/data/services/file_service.dart';
 import 'package:cafe_order/data/services/prefs_service.dart';
+import 'package:cafe_order/data/services/recommender.dart';
 import 'package:cafe_order/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,6 +34,7 @@ Future<Widget> cafeApp({
   FakeLocationService? location,
   FakePhotoService? photos,
   ReviewRepository? reviews,
+  MenuRecommender? recommender,
   Map<String, Object> prefs = const {},
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
@@ -46,6 +48,7 @@ Future<Widget> cafeApp({
       location: location ?? FakeLocationService(),
       photos: photos ?? FakePhotoService(),
       loyalty: FakeLoyaltyRepository(),
+      recommender: recommender ?? const FakeRecommender(delay: Duration.zero),
       reviews:
           reviews ??
           ReviewRepository(

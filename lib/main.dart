@@ -19,6 +19,7 @@ import 'data/services/file_service.dart';
 import 'data/services/firebase_setup.dart';
 import 'data/services/location_service.dart';
 import 'data/services/photo_service.dart';
+import 'data/services/recommender.dart';
 import 'data/services/token_store.dart';
 import 'data/services/prefs_service.dart';
 import 'l10n/app_localizations.dart';
@@ -58,6 +59,8 @@ Future<void> main() async {
         photos: ImagePickerPhotoService(),
         reviews: ReviewRepository(files),
         loyalty: ApiLoyaltyRepository(api),
+        // สัปดาห์ 16: Service ปลอม (เปลี่ยนเป็น ApiRecommender(api) เมื่อมีเซิร์ฟเวอร์ AI)
+        recommender: const FakeRecommender(),
         branches: ApiBranchRepository(api),
         favorites: SqliteFavoriteRepository(db),
         settings: SettingsRepository(prefs),
