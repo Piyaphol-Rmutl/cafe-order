@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'w01_hot_reload.dart';
 import 'w01_lifecycle.dart';
+import 'w04_layout.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
   (week: 'w01', title: 'Hot Reload กับสถานะ', builder: (_) => const HotReloadDemo()),
   (week: 'w01', title: 'วงจรชีวิตของแอป', builder: (_) => const LifecycleDemo()),
+  (week: 'w04', title: 'เลย์เอาต์: Overflow, Constraints, Grid', builder: (_) => const LayoutDemo()),
 ];
 
 /// ปุ่มบนแถบด้านบนสำหรับเปิดเมนูผู้พัฒนา
