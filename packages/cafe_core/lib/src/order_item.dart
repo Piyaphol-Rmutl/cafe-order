@@ -11,8 +11,9 @@ class OrderItem with Priced {
     Set<Topping>? toppings,
     this.quantity = 1,
     this.note,
-  })  : toppings = toppings ?? {},
-        assert(quantity > 0, 'จำนวนต้องมากกว่า 0');
+    this.cupName,
+  }) : toppings = toppings ?? {},
+       assert(quantity > 0, 'จำนวนต้องมากกว่า 0');
 
   final MenuItem item;
   final CupSize size;
@@ -20,6 +21,7 @@ class OrderItem with Priced {
   final Set<Topping> toppings;
   final int quantity;
   final String? note;
+  final String? cupName; // ชื่อที่เขียนบนแก้ว
 
   /// ราคาต่อแก้ว = ราคาเมนู + ขนาด + ท็อปปิงทั้งหมด (ใช้ fold รวมค่า)
   int get unitPrice {
@@ -33,28 +35,30 @@ class OrderItem with Priced {
 
   /// คำอธิบายสั้น เช่น "L · หวาน 50% · เพิ่มช็อต"
   String get summary => [
-        if (item.isDrink) size.label,
-        if (item.isDrink) 'หวาน ${sweetness.label}',
-        ...toppings.map((t) => t.name),
-      ].join(' · ');
+    if (item.isDrink) size.label,
+    if (item.isDrink) 'หวาน ${sweetness.label}',
+    ...toppings.map((t) => t.name),
+  ].join(' · ');
 
   OrderItem copyWith({int? quantity}) => OrderItem(
-        item: item,
-        size: size,
-        sweetness: sweetness,
-        toppings: toppings,
-        quantity: quantity ?? this.quantity,
-        note: note,
-      );
+    item: item,
+    size: size,
+    sweetness: sweetness,
+    toppings: toppings,
+    quantity: quantity ?? this.quantity,
+    note: note,
+    cupName: cupName,
+  );
 
   Map<String, dynamic> toJson() => {
-        'menuId': item.id,
-        'name': item.name,
-        'size': size.name,
-        'sweetness': sweetness.name,
-        'toppings': [for (final t in toppings) t.id],
-        'quantity': quantity,
-        'note': note,
-        'unitPrice': unitPrice,
-      };
+    'menuId': item.id,
+    'name': item.name,
+    'size': size.name,
+    'sweetness': sweetness.name,
+    'toppings': [for (final t in toppings) t.id],
+    'quantity': quantity,
+    'note': note,
+    'cupName': cupName,
+    'unitPrice': unitPrice,
+  };
 }

@@ -11,9 +11,7 @@ Future<List<MenuItem>> loadMenu(
 }) async {
   await Future<void>.delayed(delay); // จำลองว่าต้องรอ
   final list = jsonDecode(jsonText) as List<dynamic>;
-  return [
-    for (final e in list) MenuItem.fromJson(e as Map<String, dynamic>),
-  ];
+  return [for (final e in list) MenuItem.fromJson(e as Map<String, dynamic>)];
 }
 
 /// จำลองความคืบหน้าของคำสั่งซื้อเป็น Stream (async* + yield)

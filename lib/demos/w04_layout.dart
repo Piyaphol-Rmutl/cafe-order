@@ -20,12 +20,12 @@ class LayoutDemo extends StatelessWidget {
           const Text('แก้แล้ว: ห่อข้อความด้วย Expanded'),
           FixedMenuRow(item: sampleMenu.first),
           const Divider(),
-          const Text('2) Constraints: Container ขอ 300×80 แต่พ่อบังคับเต็มความกว้าง'),
+          const Text(
+            '2) Constraints: Container ขอ 300×80 แต่พ่อบังคับเต็มความกว้าง',
+          ),
           Container(width: 300, height: 80, color: Colors.amber),
           const Text('ห่อด้วย Center: พ่อให้ขนาดหลวม ลูกจึงได้ 300×80 ตามขอ'),
-          Center(
-            child: Container(width: 300, height: 80, color: Colors.amber),
-          ),
+          Center(child: Container(width: 300, height: 80, color: Colors.amber)),
           const Divider(),
           const Text('3) กริดเมนู (GridView ภายในกล่องสูง 420)'),
           const SizedBox(height: 420, child: MenuGrid(menu: sampleMenu)),

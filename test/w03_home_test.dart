@@ -7,10 +7,12 @@ void main() {
   testWidgets('หน้าแรกมีโลโก้ ชื่อร้าน InfoRow และเมนูแนะนำ', (tester) async {
     await tester.pumpWidget(const CafeOrderApp());
 
-    final logo = find.byWidgetPredicate((w) =>
-        w is Image &&
-        w.image is AssetImage &&
-        (w.image as AssetImage).assetName == 'assets/images/logo.png');
+    final logo = find.byWidgetPredicate(
+      (w) =>
+          w is Image &&
+          w.image is AssetImage &&
+          (w.image as AssetImage).assetName == 'assets/images/logo.png',
+    );
     expect(logo, findsOneWidget);
 
     expect(find.text('ร้านกาแฟคณะวิศวกรรมศาสตร์'), findsOneWidget);

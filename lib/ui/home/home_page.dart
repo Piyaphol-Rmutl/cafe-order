@@ -2,6 +2,7 @@ import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../demos/demo_menu.dart';
+import '../customize/customize_page.dart';
 import '../menu/menu_list.dart';
 import 'info_row.dart';
 
@@ -16,7 +17,23 @@ class HomePage extends StatelessWidget {
         title: const Text('Café Order'),
         actions: const [DemoMenuButton()],
       ),
-      body: const MenuList(menu: sampleMenu, header: ShopHeader()),
+      body: MenuList(
+        menu: sampleMenu,
+        header: const ShopHeader(),
+        // แตะ → เปิดหน้าปรับแต่ง (สัปดาห์ 6 จะอธิบาย Navigator อย่างละเอียด)
+        onSelect: (item) => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => CustomizePage(item: item)),
+        ),
+        // กดค้าง → แผ่นด้านล่างแสดงคำอธิบาย
+        onLongPress: (item) => showModalBottomSheet<void>(
+          context: context,
+          builder: (_) => ListTile(
+            contentPadding: const EdgeInsets.all(24),
+            title: Text(item.name),
+            subtitle: Text(item.description),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -39,8 +56,14 @@ class ShopHeader extends StatelessWidget {
           Text('ร้านกาแฟคณะวิศวกรรมศาสตร์', style: textTheme.headlineSmall),
           Text('สั่งล่วงหน้า ไม่ต้องรอคิว', style: textTheme.bodyLarge),
           const SizedBox(height: 16),
-          const InfoRow(icon: Icons.schedule, text: 'เปิด 07:30–17:00 จันทร์–ศุกร์'),
-          const InfoRow(icon: Icons.place, text: 'ชั้น 1 อาคารวิศวกรรมคอมพิวเตอร์'),
+          const InfoRow(
+            icon: Icons.schedule,
+            text: 'เปิด 07:30–17:00 จันทร์–ศุกร์',
+          ),
+          const InfoRow(
+            icon: Icons.place,
+            text: 'ชั้น 1 อาคารวิศวกรรมคอมพิวเตอร์',
+          ),
           const InfoRow(icon: Icons.phone, text: '053-000-000'),
           const SizedBox(height: 8),
           Card(

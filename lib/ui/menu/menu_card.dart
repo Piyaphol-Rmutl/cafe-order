@@ -6,39 +6,46 @@ import 'menu_image.dart';
 /// แถวเมนูสำหรับมุมมองรายการ (ListView)
 /// Row: [รูป 72×72] [Expanded(ชื่อ + คำอธิบาย)] [ราคา]
 class MenuTile extends StatelessWidget {
-  const MenuTile({super.key, required this.item});
+  const MenuTile({super.key, required this.item, this.onTap, this.onLongPress});
 
   final MenuItem item;
+  final VoidCallback? onTap; // แตะ: เปิดหน้าปรับแต่ง
+  final VoidCallback? onLongPress; // กดค้าง: ดูคำอธิบาย
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Row(
-        children: [
-          MenuImage(item: item, size: 72),
-          const SizedBox(width: 12),
-          // Expanded ให้ข้อความใช้พื้นที่ที่เหลือ ข้อความยาวจึงไม่ล้น (Overflow)
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item.name, style: textTheme.titleMedium),
-                Text(
-                  item.description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodySmall,
-                ),
-              ],
+      // InkWell ตอบสนองการแตะพร้อมเอฟเฟกต์ระลอกน้ำ (ripple)
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: Row(
+          children: [
+            MenuImage(item: item, size: 72),
+            const SizedBox(width: 12),
+            // Expanded ให้ข้อความใช้พื้นที่ที่เหลือ ข้อความยาวจึงไม่ล้น (Overflow)
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.name, style: textTheme.titleMedium),
+                  Text(
+                    item.description,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text('${item.price} บาท', style: textTheme.titleSmall),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text('${item.price} บาท', style: textTheme.titleSmall),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +74,10 @@ class MenuGridCard extends StatelessWidget {
                   top: 8,
                   left: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: scheme.primary,
                       borderRadius: BorderRadius.circular(12),

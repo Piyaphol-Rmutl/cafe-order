@@ -11,10 +11,13 @@ Future<void> main() async {
 
   // 2) คลาสและพารามิเตอร์แบบระบุชื่อ
   final latte = sampleMenu.firstWhere((m) => m.id == 'latte');
-  final order = Order(id: 'A001', items: [
-    OrderItem(item: latte, size: CupSize.large, toppings: {allToppings[0]}),
-    OrderItem(item: sampleMenu.last, quantity: 2),
-  ]);
+  final order = Order(
+    id: 'A001',
+    items: [
+      OrderItem(item: latte, size: CupSize.large, toppings: {allToppings[0]}),
+      OrderItem(item: sampleMenu.last, quantity: 2),
+    ],
+  );
   final (:cups, :total) = order.summary; // แยก Record ออกเป็นตัวแปร
   print('คำสั่งซื้อ ${order.id}: $cups ชิ้น รวม ${order.priceText}');
 

@@ -5,10 +5,18 @@ import 'menu_card.dart';
 
 /// รายการเมนู: ListView.builder สร้างเฉพาะแถวที่มองเห็น
 class MenuList extends StatelessWidget {
-  const MenuList({super.key, required this.menu, this.header});
+  const MenuList({
+    super.key,
+    required this.menu,
+    this.header,
+    this.onSelect,
+    this.onLongPress,
+  });
 
   final List<MenuItem> menu;
   final Widget? header; // แถวแรก (ไม่บังคับ)
+  final ValueChanged<MenuItem>? onSelect;
+  final ValueChanged<MenuItem>? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,12 @@ class MenuList extends StatelessWidget {
       itemCount: menu.length + offset,
       itemBuilder: (context, index) {
         if (index < offset) return header!;
-        return MenuTile(item: menu[index - offset]);
+        final item = menu[index - offset];
+        return MenuTile(
+          item: item,
+          onTap: onSelect == null ? null : () => onSelect!(item),
+          onLongPress: onLongPress == null ? null : () => onLongPress!(item),
+        );
       },
     );
   }

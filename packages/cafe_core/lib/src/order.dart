@@ -12,8 +12,7 @@ enum OrderStatus {
   final String label;
 
   /// สถานะถัดไป (สถานะสุดท้ายคืน null)
-  OrderStatus? get next =>
-      index + 1 < values.length ? values[index + 1] : null;
+  OrderStatus? get next => index + 1 < values.length ? values[index + 1] : null;
 }
 
 class Order with Priced {
@@ -37,9 +36,9 @@ class Order with Priced {
       (cups: items.fold(0, (sum, i) => sum + i.quantity), total: total);
 
   Order copyWith({OrderStatus? status}) => Order(
-        id: id,
-        items: items,
-        status: status ?? this.status,
-        createdAt: createdAt,
-      );
+    id: id,
+    items: items,
+    status: status ?? this.status,
+    createdAt: createdAt,
+  );
 }

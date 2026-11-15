@@ -24,11 +24,10 @@ class PercentOff extends Promotion {
 /// ซื้อครบ N แก้ว ลดตามจำนวนเงินที่กำหนด
 class CupsDiscount extends Promotion {
   const CupsDiscount({required this.minCups, required this.amount})
-      : super('ครบ $minCups แก้ว ลด $amount บาท');
+    : super('ครบ $minCups แก้ว ลด $amount บาท');
   final int minCups;
   final int amount;
 
   @override
-  int discountFor(Order order) =>
-      order.summary.cups >= minCups ? amount : 0;
+  int discountFor(Order order) => order.summary.cups >= minCups ? amount : 0;
 }

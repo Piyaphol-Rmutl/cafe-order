@@ -56,10 +56,13 @@ void main() {
   });
 
   group('Order และ Promotion', () {
-    final order = Order(id: 'A1', items: [
-      OrderItem(item: latte, quantity: 2), // (55+10)*2 = 130
-      OrderItem(item: croissant), // 35
-    ]);
+    final order = Order(
+      id: 'A1',
+      items: [
+        OrderItem(item: latte, quantity: 2), // (55+10)*2 = 130
+        OrderItem(item: croissant), // 35
+      ],
+    );
 
     test('summary คืน Record จำนวนชิ้นและยอดรวม', () {
       expect(order.summary, (cups: 3, total: 165));
@@ -74,8 +77,10 @@ void main() {
     test('สถานะถัดไปเรียงตามลำดับ', () {
       expect(OrderStatus.received.next, OrderStatus.preparing);
       expect(OrderStatus.completed.next, isNull);
-      expect(order.copyWith(status: OrderStatus.ready).status,
-          OrderStatus.ready);
+      expect(
+        order.copyWith(status: OrderStatus.ready).status,
+        OrderStatus.ready,
+      );
     });
   });
 

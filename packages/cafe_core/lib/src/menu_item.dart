@@ -46,13 +46,13 @@ class MenuItem {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        if (nameEn != null) 'nameEn': nameEn,
-        'category': category.name,
-        'price': price,
-        'description': description,
-      };
+    'id': id,
+    'name': name,
+    if (nameEn != null) 'nameEn': nameEn,
+    'category': category.name,
+    'price': price,
+    'description': description,
+  };
 
   // เทียบด้วย id เพื่อใช้เป็นสมาชิกของ Set หรือคีย์ของ Map ได้
   @override
