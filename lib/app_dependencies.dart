@@ -1,0 +1,44 @@
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+
+import 'data/repositories/favorite_repository.dart';
+import 'data/repositories/menu_repository.dart';
+import 'data/repositories/order_repository.dart';
+import 'data/repositories/settings_repository.dart';
+import 'main.dart';
+import 'ui/cart/cart_view_model.dart';
+import 'ui/menu/menu_view_model.dart';
+import 'ui/settings/settings_view_model.dart';
+
+/// Repository ทุกตัวที่แอปต้องใช้ (main.dart สร้างตัวจริง เทสต์ส่งตัวปลอมแทนได้)
+class AppDependencies {
+  const AppDependencies({
+    required this.menu,
+    required this.orders,
+    required this.favorites,
+    required this.settings,
+  });
+
+  final MenuRepository menu;
+  final OrderRepository orders;
+  final FavoriteRepository favorites;
+  final SettingsRepository settings;
+}
+
+/// ประกอบแอป: วาง Repository และ ViewModel ระดับแอปไว้เหนือ CafeOrderApp
+Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
+  return MultiProvider(
+    providers: [
+      // ชั้นข้อมูล: Provider ธรรมดา (ไม่เปลี่ยนค่า)
+      Provider<MenuRepository>.value(value: deps.menu),
+      Provider<OrderRepository>.value(value: deps.orders),
+      // ชั้น ViewModel ระดับแอป
+      ChangeNotifierProvider(
+        create: (_) => MenuViewModel(deps.menu, deps.favorites)..load(),
+      ),
+      ChangeNotifierProvider(create: (_) => CartViewModel(deps.orders)),
+      ChangeNotifierProvider(create: (_) => SettingsViewModel(deps.settings)),
+    ],
+    child: CafeOrderApp(initialLocation: initialLocation),
+  );
+}

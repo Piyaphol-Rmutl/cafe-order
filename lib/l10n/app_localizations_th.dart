@@ -104,4 +104,28 @@ class AppLocalizationsTh extends AppLocalizations {
   String menuSemantics(String name, int price) {
     return '$name ราคา $price บาท';
   }
+
+  @override
+  String get orderHistory => 'ประวัติคำสั่งซื้อ';
+
+  @override
+  String get noOrders => 'ยังไม่มีคำสั่งซื้อ';
+
+  @override
+  String get historyError => 'โหลดประวัติคำสั่งซื้อไม่สำเร็จ';
+
+  @override
+  String get receipt => 'ใบเสร็จ';
+
+  @override
+  String get favorite => 'รายการโปรด';
+
+  @override
+  String get loadError => 'โหลดเมนูไม่สำเร็จ';
+
+  @override
+  String get retry => 'ลองอีกครั้ง';
+
+  @override
+  String get orderFailed => 'สั่งซื้อไม่สำเร็จ กรุณาลองใหม่';
 }

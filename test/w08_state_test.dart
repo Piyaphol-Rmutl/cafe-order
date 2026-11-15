@@ -1,19 +1,27 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/demos/w08_inherited.dart';
 import 'package:cafe_order/demos/w08_listenable_builder.dart';
-import 'package:cafe_order/state/cart_model.dart';
-import 'package:cafe_order/state/settings_model.dart';
+import 'package:cafe_order/ui/cart/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
+import 'fakes.dart';
 import 'helpers.dart';
+
+/// สัปดาห์ 10: CartModel ย้ายเป็น CartViewModel ที่ต้องมี OrderRepository
+CartViewModel newCart() => CartViewModel(InMemoryOrderRepository());
+
+/// อ่าน ViewModel ที่แอปสร้างไว้ใน Provider
+T readVm<T>(WidgetTester tester) =>
+    tester.element(find.byType(MaterialApp)).read<T>();
 
 void main() {
   final latte = sampleMenu.first;
 
-  group('CartModel', () {
+  group('CartViewModel (เดิม CartModel)', () {
     test('add/setQuantity/removeAt แจ้งผู้ฟังทุกครั้ง', () {
-      final cart = CartModel();
+      final cart = newCart();
       var notified = 0;
       cart.addListener(() => notified++);
 
@@ -32,30 +40,22 @@ void main() {
     });
 
     test('items แก้จากภายนอกไม่ได้', () {
-      final cart = CartModel()..add(OrderItem(item: latte));
+      final cart = newCart()..add(OrderItem(item: latte));
       expect(() => cart.items.clear(), throwsUnsupportedError);
     });
 
-    test('checkout คืน Order และล้างตะกร้า', () {
-      final cart = CartModel()..add(OrderItem(item: latte, quantity: 2));
-      final order = cart.checkout();
-      expect(order.total, 130);
+    test('checkout คืน Order และล้างตะกร้า', () async {
+      final cart = newCart()..add(OrderItem(item: latte, quantity: 2));
+      final order = await cart.checkout();
+      expect(order!.total, 130);
       expect(cart.isEmpty, isTrue);
     });
   });
 
-  test('SettingsModel ไม่แจ้งเมื่อค่าเดิม', () {
-    final settings = SettingsModel();
-    var notified = 0;
-    settings.addListener(() => notified++);
-    settings.locale = const Locale('th');
-    settings.themeMode = ThemeMode.dark;
-    expect(notified, 1);
-  });
-
   testWidgets('badge บนแท็บตะกร้าอัปเดตเมื่อโมเดลเปลี่ยน', (tester) async {
-    final cart = CartModel();
-    await tester.pumpWidget(cafeApp(cart: cart));
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
+    final cart = readVm<CartViewModel>(tester);
     expect(find.byType(Badge), findsOneWidget);
     expect(find.text('2'), findsNothing);
 
@@ -70,8 +70,11 @@ void main() {
   testWidgets('ลดจำนวนในหน้าตะกร้า → badge ลดตาม (หน้าอื่นรู้ด้วย)', (
     tester,
   ) async {
-    final cart = CartModel()..add(OrderItem(item: latte, quantity: 2));
-    await tester.pumpWidget(cafeApp(cart: cart, initialLocation: '/cart'));
+    await tester.pumpWidget(await cafeApp(initialLocation: '/cart'));
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
+    final cart = readVm<CartViewModel>(tester)
+      ..add(OrderItem(item: latte, quantity: 2));
+    await tester.pump();
     await tester.tap(find.byTooltip('ลบ ลาเต้'));
     await tester.pump();
     expect(cart.count, 1);
@@ -83,8 +86,10 @@ void main() {
   });
 
   testWidgets('ปัดซ้ายเพื่อลบ (Dismissible)', (tester) async {
-    final cart = CartModel()..add(OrderItem(item: latte));
-    await tester.pumpWidget(cafeApp(cart: cart, initialLocation: '/cart'));
+    await tester.pumpWidget(await cafeApp(initialLocation: '/cart'));
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
+    final cart = readVm<CartViewModel>(tester)..add(OrderItem(item: latte));
+    await tester.pump();
     await tester.drag(find.text('ลาเต้ ×1'), const Offset(-500, 0));
     await tester.pumpAndSettle();
     expect(cart.isEmpty, isTrue);

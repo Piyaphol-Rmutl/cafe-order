@@ -7,7 +7,8 @@ import 'helpers.dart';
 void main() {
   testWidgets('หน้าแรกมีโลโก้ ชื่อร้าน InfoRow และเมนูแนะนำ', (tester) async {
     // สัปดาห์ 6 ย้ายหน้าร้านไปอยู่แท็บ /shop
-    await tester.pumpWidget(cafeApp(initialLocation: '/shop'));
+    await tester.pumpWidget(await cafeApp(initialLocation: '/shop'));
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
 
     final logo = find.byWidgetPredicate(
       (w) =>

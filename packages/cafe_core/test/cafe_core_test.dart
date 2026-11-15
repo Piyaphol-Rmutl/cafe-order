@@ -84,6 +84,30 @@ void main() {
     });
   });
 
+  test('Order toJson/fromJson ไปกลับ (สัปดาห์ 10)', () {
+    final order = Order(
+      id: 'A7',
+      items: [
+        OrderItem(
+          item: latte,
+          size: CupSize.large,
+          sweetness: Sweetness.less,
+          toppings: {allToppings[1]},
+          cupName: 'ต้น',
+        ),
+      ],
+      status: OrderStatus.ready,
+      createdAt: DateTime(2026, 11, 16, 9, 30),
+    );
+    final copy = Order.fromJson(jsonDecode(jsonEncode(order.toJson())));
+    expect(copy.id, 'A7');
+    expect(copy.status, OrderStatus.ready);
+    expect(copy.createdAt, order.createdAt);
+    expect(copy.total, order.total);
+    expect(copy.items.single.toppings, {allToppings[1]});
+    expect(copy.items.single.cupName, 'ต้น');
+  });
+
   group('อะซิงโครนัส', () {
     test('loadMenu อ่าน JSON แบบ Future', () async {
       final text = jsonEncode([for (final m in sampleMenu) m.toJson()]);

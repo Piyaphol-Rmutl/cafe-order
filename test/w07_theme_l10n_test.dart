@@ -17,7 +17,8 @@ Future<void> openSettings(WidgetTester tester) async {
 
 void main() {
   testWidgets('สลับโหมดมืดจากหน้าตั้งค่า', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await openSettings(tester);
     BuildContext ctx() => tester.element(find.byType(SwitchListTile));
     expect(Theme.of(ctx()).brightness, Brightness.light);
@@ -29,7 +30,8 @@ void main() {
   testWidgets('เปลี่ยนภาษาเป็นอังกฤษ ข้อความและชื่อเมนูเปลี่ยน', (
     tester,
   ) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await openSettings(tester);
     await tester.tap(find.text('EN'));
     await tester.pumpAndSettle();
@@ -74,7 +76,8 @@ void main() {
   testWidgets('Hero: รูปเมนูมี tag เดียวกันในรายการและหน้าปรับแต่ง', (
     tester,
   ) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     expect(
       find.byWidgetPredicate((w) => w is Hero && w.tag == 'menu-latte'),
       findsOneWidget,

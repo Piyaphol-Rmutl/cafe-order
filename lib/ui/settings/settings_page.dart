@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../state/settings_model.dart';
+import 'settings_view_model.dart';
 import '../l10n_ext.dart';
 
-/// หน้าตั้งค่า: โหมดมืดและภาษา (สัปดาห์ 8 อ่าน/แก้ผ่าน SettingsModel)
+/// หน้าตั้งค่า: โหมดมืดและภาษา (อ่าน/แก้ผ่าน SettingsViewModel ค่าถูกบันทึกลง shared_preferences)
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final settings = context.read<SettingsModel>(); // แค่เรียกเมธอด ใช้ read
+    final settings = context
+        .read<SettingsViewModel>(); // แค่เรียกเมธอด ใช้ read
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final lang = Localizations.localeOf(context).languageCode;
     return Scaffold(

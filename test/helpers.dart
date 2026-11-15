@@ -1,9 +1,11 @@
+import 'package:cafe_order/app_dependencies.dart';
+import 'package:cafe_order/data/repositories/settings_repository.dart';
+import 'package:cafe_order/data/services/prefs_service.dart';
 import 'package:cafe_order/l10n/app_localizations.dart';
-import 'package:cafe_order/main.dart';
-import 'package:cafe_order/state/cart_model.dart';
-import 'package:cafe_order/state/settings_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'fakes.dart';
 
 /// MaterialApp สำหรับทดสอบวิดเจ็ตเดี่ยว (มี delegates ของภาษา เพราะวิดเจ็ตใช้ context.l10n)
 Widget testApp(Widget home, {Locale locale = const Locale('th')}) {
@@ -15,13 +17,23 @@ Widget testApp(Widget home, {Locale locale = const Locale('th')}) {
   );
 }
 
-/// แอปทั้งแอปพร้อม Provider (สัปดาห์ 8) ส่ง [cart] เข้ามาเพื่อตรวจสถานะได้
-Widget cafeApp({String initialLocation = '/menu', CartModel? cart}) {
-  return MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => cart ?? CartModel()),
-      ChangeNotifierProvider(create: (_) => SettingsModel()),
-    ],
-    child: CafeOrderApp(initialLocation: initialLocation),
+/// แอปทั้งแอปกับ Repository ปลอม (สัปดาห์ 10) ส่งตัวปลอมเข้ามาเพื่อตรวจผลได้
+Future<Widget> cafeApp({
+  String initialLocation = '/menu',
+  FakeMenuRepository? menu,
+  InMemoryOrderRepository? orders,
+  InMemoryFavoriteRepository? favorites,
+  Map<String, Object> prefs = const {},
+}) async {
+  SharedPreferences.setMockInitialValues(prefs);
+  final prefsService = PrefsService(await SharedPreferences.getInstance());
+  return buildApp(
+    AppDependencies(
+      menu: menu ?? FakeMenuRepository(),
+      orders: orders ?? InMemoryOrderRepository(),
+      favorites: favorites ?? InMemoryFavoriteRepository(),
+      settings: SettingsRepository(prefsService),
+    ),
+    initialLocation: initialLocation,
   );
 }

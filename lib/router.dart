@@ -1,10 +1,14 @@
-import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import 'data/repositories/order_repository.dart';
 import 'ui/cart/cart_page.dart';
 import 'ui/customize/customize_page.dart';
 import 'ui/menu/menu_page.dart';
+import 'ui/menu/menu_view_model.dart';
+import 'ui/orders/order_history_page.dart';
+import 'ui/orders/order_history_view_model.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell/app_shell.dart';
 import 'ui/shop/shop_page.dart';
@@ -18,6 +22,15 @@ GoRouter createRouter({String initialLocation = '/menu'}) {
     initialLocation: initialLocation,
     routes: [
       GoRoute(path: '/', redirect: (_, _) => '/menu'),
+      GoRoute(
+        path: '/orders',
+        // ViewModel ของหน้านี้สร้างเมื่อเปิดหน้า และถูก dispose เมื่อปิดหน้า
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) =>
+              OrderHistoryViewModel(context.read<OrderRepository>())..load(),
+          child: const OrderHistoryPage(),
+        ),
+      ),
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsPage(),
@@ -37,9 +50,15 @@ GoRouter createRouter({String initialLocation = '/menu'}) {
                 parentNavigatorKey: rootKey,
                 builder: (context, state) {
                   final id = state.pathParameters['id']!;
-                  final item = sampleMenu.where((m) => m.id == id).firstOrNull;
+                  final menu = context.watch<MenuViewModel>();
+                  if (menu.loading) return const _LoadingPage();
+                  final item = menu.findById(id);
                   if (item == null) return const NotFoundPage();
-                  return CustomizePage(item: item);
+                  return CustomizePage(
+                    item: item,
+                    isFavorite: menu.isFavorite(id),
+                    onToggleFavorite: () => menu.toggleFavorite(id),
+                  );
                 },
               ),
             ],
@@ -62,4 +81,12 @@ class NotFoundPage extends StatelessWidget {
       body: const Center(child: Text('ไม่พบเมนูนี้')),
     );
   }
+}
+
+class _LoadingPage extends StatelessWidget {
+  const _LoadingPage();
+
+  @override
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: CircularProgressIndicator()));
 }

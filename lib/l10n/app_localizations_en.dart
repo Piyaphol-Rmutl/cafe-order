@@ -105,4 +105,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String menuSemantics(String name, int price) {
     return '$name, $price baht';
   }
+
+  @override
+  String get orderHistory => 'Order history';
+
+  @override
+  String get noOrders => 'No orders yet';
+
+  @override
+  String get historyError => 'Could not load order history';
+
+  @override
+  String get receipt => 'Receipt';
+
+  @override
+  String get favorite => 'Favorite';
+
+  @override
+  String get loadError => 'Could not load the menu';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get orderFailed => 'Order failed, please try again';
 }

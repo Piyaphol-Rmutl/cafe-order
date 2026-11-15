@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../demos/demo_menu.dart';
-import '../../state/cart_model.dart';
+import '../cart/cart_view_model.dart';
 import '../l10n_ext.dart';
 
 /// โครงของแอป: แถบนำทาง 3 แท็บ (เมนู ตะกร้า ร้าน) + Drawer
@@ -28,7 +28,7 @@ class AppShell extends StatelessWidget {
     final wide = MediaQuery.sizeOf(context).width >= 840;
     final l10n = context.l10n;
     // select: build ใหม่เฉพาะเมื่อ "จำนวน" เปลี่ยน ไม่ใช่ทุกครั้งที่ตะกร้าเปลี่ยน
-    final count = context.select<CartModel, int>((cart) => cart.count);
+    final count = context.select<CartViewModel, int>((cart) => cart.count);
     final cartIcon = Badge.count(
       count: count,
       isLabelVisible: count > 0,
@@ -106,6 +106,14 @@ class _AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop(); // ปิด Drawer ก่อน
               context.go('/menu');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.receipt_long),
+            title: Text(context.l10n.orderHistory),
+            onTap: () {
+              Navigator.of(context).pop();
+              context.push('/orders');
             },
           ),
           ListTile(

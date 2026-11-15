@@ -50,9 +50,9 @@ class OrderItem with Priced {
     cupName: cupName,
   );
 
+  /// แปลงเป็น JSON (เก็บเมนูทั้งก้อน เพื่ออ่านกลับได้แม้เมนูเปลี่ยนราคาภายหลัง)
   Map<String, dynamic> toJson() => {
-    'menuId': item.id,
-    'name': item.name,
+    'item': item.toJson(),
     'size': size.name,
     'sweetness': sweetness.name,
     'toppings': [for (final t in toppings) t.id],
@@ -61,4 +61,17 @@ class OrderItem with Priced {
     'cupName': cupName,
     'unitPrice': unitPrice,
   };
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
+    item: MenuItem.fromJson(json['item'] as Map<String, dynamic>),
+    size: CupSize.values.byName(json['size'] as String),
+    sweetness: Sweetness.values.byName(json['sweetness'] as String),
+    toppings: {
+      for (final id in json['toppings'] as List<dynamic>)
+        allToppings.firstWhere((t) => t.id == id),
+    },
+    quantity: json['quantity'] as int,
+    note: json['note'] as String?,
+    cupName: json['cupName'] as String?,
+  );
 }

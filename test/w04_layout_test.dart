@@ -9,7 +9,8 @@ import 'helpers.dart';
 
 void main() {
   testWidgets('ListView.builder สร้างแถวเมนูเมื่อเลื่อนถึง', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     final list = find
         .descendant(
           of: find.byType(MenuList),

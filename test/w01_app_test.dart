@@ -5,12 +5,14 @@ import 'helpers.dart';
 
 void main() {
   testWidgets('หน้าแรกแสดงชื่อแอป', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     expect(find.text('Café Order'), findsOneWidget);
   });
 
   testWidgets('เมนูผู้พัฒนา → สาธิตวงจรชีวิตบันทึกสถานะ', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await tester.tap(find.byTooltip('เมนูผู้พัฒนา'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('วงจรชีวิตของแอป'));
@@ -25,7 +27,8 @@ void main() {
   });
 
   testWidgets('สาธิต Hot Reload: กดปุ่มแล้วตัวเลขเพิ่ม', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await tester.tap(find.byTooltip('เมนูผู้พัฒนา'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Hot Reload กับสถานะ'));

@@ -106,7 +106,8 @@ void main() {
   });
 
   testWidgets('แตะเมนู → หน้าปรับแต่ง, กดค้าง → คำอธิบาย', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     final americano = find.text('อเมริกาโน');
     await tester.scrollUntilVisible(
       americano,

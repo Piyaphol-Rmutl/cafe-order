@@ -247,6 +247,54 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'{name} ราคา {price} บาท'**
   String menuSemantics(String name, int price);
+
+  /// No description provided for @orderHistory.
+  ///
+  /// In th, this message translates to:
+  /// **'ประวัติคำสั่งซื้อ'**
+  String get orderHistory;
+
+  /// No description provided for @noOrders.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่มีคำสั่งซื้อ'**
+  String get noOrders;
+
+  /// No description provided for @historyError.
+  ///
+  /// In th, this message translates to:
+  /// **'โหลดประวัติคำสั่งซื้อไม่สำเร็จ'**
+  String get historyError;
+
+  /// No description provided for @receipt.
+  ///
+  /// In th, this message translates to:
+  /// **'ใบเสร็จ'**
+  String get receipt;
+
+  /// No description provided for @favorite.
+  ///
+  /// In th, this message translates to:
+  /// **'รายการโปรด'**
+  String get favorite;
+
+  /// No description provided for @loadError.
+  ///
+  /// In th, this message translates to:
+  /// **'โหลดเมนูไม่สำเร็จ'**
+  String get loadError;
+
+  /// No description provided for @retry.
+  ///
+  /// In th, this message translates to:
+  /// **'ลองอีกครั้ง'**
+  String get retry;
+
+  /// No description provided for @orderFailed.
+  ///
+  /// In th, this message translates to:
+  /// **'สั่งซื้อไม่สำเร็จ กรุณาลองใหม่'**
+  String get orderFailed;
 }
 
 class _AppLocalizationsDelegate

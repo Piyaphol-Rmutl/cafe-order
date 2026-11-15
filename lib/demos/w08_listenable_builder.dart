@@ -1,7 +1,18 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 
-import '../state/cart_model.dart';
+/// โมเดลตะกร้าแบบย่อสำหรับสาธิต: ChangeNotifier ล้วน
+class DemoCart extends ChangeNotifier {
+  final List<OrderItem> _items = [];
+
+  List<OrderItem> get items => List.unmodifiable(_items);
+  int get count => _items.fold(0, (sum, i) => sum + i.quantity);
+
+  void add(OrderItem item) {
+    _items.add(item);
+    notifyListeners(); // แจ้งทุกผู้ฟัง
+  }
+}
 
 /// สาธิต ChangeNotifier + ListenableBuilder (ยังไม่ใช้แพ็กเกจ provider)
 /// วิดเจ็ตสองตัวที่อยู่คนละกิ่งฟังโมเดลเดียวกัน จึงเห็นข้อมูลตรงกันเสมอ
@@ -13,7 +24,7 @@ class ListenableDemo extends StatefulWidget {
 }
 
 class _ListenableDemoState extends State<ListenableDemo> {
-  final CartModel _cart = CartModel(); // โมเดลของหน้านี้เท่านั้น
+  final DemoCart _cart = DemoCart(); // โมเดลของหน้านี้เท่านั้น
 
   @override
   void dispose() {

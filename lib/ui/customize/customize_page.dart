@@ -7,7 +7,17 @@ import 'validators.dart';
 
 /// ฟอร์มปรับแต่งเครื่องดื่ม: StatefulWidget เพราะค่าที่เลือกเปลี่ยนได้
 class CustomizePage extends StatefulWidget {
-  const CustomizePage({super.key, required this.item, this.onSubmit});
+  const CustomizePage({
+    super.key,
+    required this.item,
+    this.onSubmit,
+    this.isFavorite,
+    this.onToggleFavorite,
+  });
+
+  /// รายการโปรด (สัปดาห์ 10): null = ไม่แสดงปุ่มหัวใจ
+  final bool? isFavorite;
+  final VoidCallback? onToggleFavorite;
 
   final MenuItem item; // ค่าคงที่จากพ่อ อ่านผ่าน widget.item
 
@@ -73,7 +83,19 @@ class _CustomizePageState extends State<CustomizePage> {
     final item = widget.item;
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(item.nameFor(context))),
+      appBar: AppBar(
+        title: Text(item.nameFor(context)),
+        actions: [
+          if (widget.isFavorite != null)
+            IconButton(
+              tooltip: l10n.favorite,
+              isSelected: widget.isFavorite,
+              icon: const Icon(Icons.favorite_border),
+              selectedIcon: const Icon(Icons.favorite),
+              onPressed: widget.onToggleFavorite,
+            ),
+        ],
+      ),
       body: Form(
         key: _formKey,
         // ใช้ SingleChildScrollView + Column (ไม่ใช่ ListView) เพื่อให้ทุกช่อง

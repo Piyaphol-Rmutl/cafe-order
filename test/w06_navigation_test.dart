@@ -28,7 +28,8 @@ void main() {
   testWidgets('เมนู → ปรับแต่ง → pop ผลลัพธ์ → ตะกร้า → สั่งซื้อ', (
     tester,
   ) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await addToCart(tester, 'ลาเต้');
     expect(find.text('เพิ่ม ลาเต้ ลงตะกร้าแล้ว'), findsOneWidget);
     await tester.pump(const Duration(seconds: 5)); // รอ SnackBar หายไป
@@ -48,7 +49,8 @@ void main() {
   });
 
   testWidgets('ลบรายการในตะกร้า', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await addToCart(tester, 'ลาเต้');
     await tester.tap(find.text('ตะกร้า'));
     await tester.pumpAndSettle();
@@ -58,7 +60,8 @@ void main() {
   });
 
   testWidgets('TabBar กรองตามหมวด', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     final tab = find.widgetWithText(Tab, 'เบเกอรี่');
     await tester.ensureVisible(tab); // TabBar เลื่อนได้ แท็บท้ายอาจอยู่นอกจอ
     await tester.pumpAndSettle();
@@ -69,14 +72,15 @@ void main() {
   });
 
   testWidgets('เส้นทางที่ไม่มีเมนู → หน้าไม่พบ', (tester) async {
-    await tester.pumpWidget(cafeApp(initialLocation: '/menu/xyz'));
+    await tester.pumpWidget(await cafeApp(initialLocation: '/menu/xyz'));
     await tester.pumpAndSettle();
     expect(find.byType(NotFoundPage), findsOneWidget);
   });
 
   testWidgets('จอแคบ: NavigationBar + รายการ', (tester) async {
     setSize(tester, const Size(400, 800));
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(find.byType(MenuTile), findsWidgets);
   });
@@ -85,7 +89,8 @@ void main() {
     tester,
   ) async {
     setSize(tester, const Size(1280, 800));
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     expect(find.byType(NavigationRail), findsOneWidget);
     expect(find.byType(MenuGridCard), findsWidgets);
     expect(find.byType(CustomizePage), findsOneWidget);
@@ -102,7 +107,8 @@ void main() {
   });
 
   testWidgets('Drawer เปิดได้', (tester) async {
-    await tester.pumpWidget(cafeApp());
+    await tester.pumpWidget(await cafeApp());
+    await tester.pumpAndSettle(); // รอเมนูโหลด (สัปดาห์ 10)
     await tester.tap(
       find.byIcon(Icons.menu),
     ); // tooltip เป็นภาษาไทยตั้งแต่สัปดาห์ 7

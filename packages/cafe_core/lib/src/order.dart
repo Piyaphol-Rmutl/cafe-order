@@ -41,4 +41,22 @@ class Order with Priced {
     status: status ?? this.status,
     createdAt: createdAt,
   );
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'items': [for (final i in items) i.toJson()],
+    'status': status.name,
+    'createdAt': createdAt.millisecondsSinceEpoch,
+    'total': total,
+  };
+
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+    id: json['id'] as String,
+    items: [
+      for (final i in json['items'] as List<dynamic>)
+        OrderItem.fromJson(i as Map<String, dynamic>),
+    ],
+    status: OrderStatus.values.byName(json['status'] as String),
+    createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+  );
 }

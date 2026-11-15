@@ -24,5 +24,13 @@
   "orderPlaced": "Order {id} placed",
   "orderSummary": "{cups, plural, =1{1 item} other{{cups} items}}, total ฿{price}",
   "ok": "OK",
-  "menuSemantics": "{name}, {price} baht"
+  "menuSemantics": "{name}, {price} baht",
+  "orderHistory": "Order history",
+  "noOrders": "No orders yet",
+  "historyError": "Could not load order history",
+  "receipt": "Receipt",
+  "favorite": "Favorite",
+  "loadError": "Could not load the menu",
+  "retry": "Retry",
+  "orderFailed": "Order failed, please try again"
 }

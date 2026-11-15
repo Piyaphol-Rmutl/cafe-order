@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../state/cart_model.dart';
+import 'cart_view_model.dart';
 import '../l10n_ext.dart';
 
-/// แท็บตะกร้า (สัปดาห์ 8): StatelessWidget ที่ฟัง CartModel
+/// แท็บตะกร้า: StatelessWidget ที่ฟัง CartViewModel
 /// ลบหรือเปลี่ยนจำนวนที่นี่ badge บนแถบนำทางก็อัปเดตทันที
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   Future<void> _checkout(BuildContext context) async {
     final l10n = context.l10n;
-    final order = context.read<CartModel>().checkout();
+    final order = await context.read<CartViewModel>().checkout();
+    if (!context.mounted) return;
+    if (order == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.orderFailed)));
+      return;
+    }
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
@@ -31,7 +37,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<CartModel>(); // ฟังการเปลี่ยนแปลงทั้งหมด
+    final cart = context.watch<CartViewModel>(); // ฟังการเปลี่ยนแปลงทั้งหมด
     final l10n = context.l10n;
     if (cart.isEmpty) {
       return Center(child: Text(l10n.cartEmpty));
@@ -84,8 +90,14 @@ class CartPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: FilledButton(
-            onPressed: () => _checkout(context),
-            child: Text(l10n.checkout(cart.total)),
+            // ระหว่างส่ง ปิดปุ่ม (null) กันกดซ้ำ
+            onPressed: cart.placing ? null : () => _checkout(context),
+            child: cart.placing
+                ? const SizedBox.square(
+                    dimension: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Text(l10n.checkout(cart.total)),
           ),
         ),
       ],

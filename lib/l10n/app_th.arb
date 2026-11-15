@@ -9,7 +9,13 @@
   "language": "ภาษา",
   "allCategories": "ทั้งหมด",
   "price": "{price} บาท",
-  "@price": {"placeholders": {"price": {"type": "int"}}},
+  "@price": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "cupSize": "ขนาดแก้ว",
   "sweetness": "ความหวาน",
   "toppings": "ท็อปปิง",
@@ -18,19 +24,75 @@
   "note": "หมายเหตุถึงบาริสต้า",
   "lessSugarHint": "หวานน้อย ดีต่อสุขภาพ",
   "addToCart": "ใส่ตะกร้า · {price} บาท",
-  "@addToCart": {"placeholders": {"price": {"type": "int"}}},
+  "@addToCart": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "addedToCart": "เพิ่ม {name} ลงตะกร้าแล้ว",
-  "@addedToCart": {"placeholders": {"name": {"type": "String"}}},
+  "@addedToCart": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "cartEmpty": "ตะกร้ายังว่าง",
   "removeItem": "ลบ {name}",
-  "@removeItem": {"placeholders": {"name": {"type": "String"}}},
+  "@removeItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "checkout": "สั่งซื้อ · {price} บาท",
-  "@checkout": {"placeholders": {"price": {"type": "int"}}},
+  "@checkout": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "orderPlaced": "สั่งซื้อ {id} แล้ว",
-  "@orderPlaced": {"placeholders": {"id": {"type": "String"}}},
+  "@orderPlaced": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
   "orderSummary": "{cups, plural, other{{cups} รายการ}} รวม {price} บาท",
-  "@orderSummary": {"placeholders": {"cups": {"type": "int"}, "price": {"type": "int"}}},
+  "@orderSummary": {
+    "placeholders": {
+      "cups": {
+        "type": "int"
+      },
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "ok": "ตกลง",
   "menuSemantics": "{name} ราคา {price} บาท",
-  "@menuSemantics": {"placeholders": {"name": {"type": "String"}, "price": {"type": "int"}}}
+  "@menuSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "orderHistory": "ประวัติคำสั่งซื้อ",
+  "noOrders": "ยังไม่มีคำสั่งซื้อ",
+  "historyError": "โหลดประวัติคำสั่งซื้อไม่สำเร็จ",
+  "receipt": "ใบเสร็จ",
+  "favorite": "รายการโปรด",
+  "loadError": "โหลดเมนูไม่สำเร็จ",
+  "retry": "ลองอีกครั้ง",
+  "orderFailed": "สั่งซื้อไม่สำเร็จ กรุณาลองใหม่"
 }
