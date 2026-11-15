@@ -1,39 +1,32 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 
-import '../../demos/demo_menu.dart';
-import '../customize/customize_page.dart';
-import '../menu/menu_list.dart';
 import 'info_row.dart';
 
-/// หน้าแรก: ส่วนหัวร้าน (สัปดาห์ 3) + รายการเมนู (สัปดาห์ 4)
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+/// แท็บ "ร้าน": CustomScrollView รวม Sliver หลายชนิดให้เลื่อนเป็นผืนเดียว
+class ShopPage extends StatelessWidget {
+  const ShopPage({super.key});
+
+  static const _hours = {
+    'จันทร์–ศุกร์': '07:30–17:00',
+    'เสาร์': '09:00–15:00',
+    'อาทิตย์': 'ปิด',
+  };
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Café Order'),
-        actions: const [DemoMenuButton()],
-      ),
-      body: MenuList(
-        menu: sampleMenu,
-        header: const ShopHeader(),
-        // แตะ → เปิดหน้าปรับแต่ง (สัปดาห์ 6 จะอธิบาย Navigator อย่างละเอียด)
-        onSelect: (item) => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => CustomizePage(item: item)),
+    return CustomScrollView(
+      slivers: [
+        // แถบหัวขนาดใหญ่ที่หดลงเมื่อเลื่อน
+        const SliverAppBar.large(title: Text('ร้านของเรา')),
+        const SliverToBoxAdapter(child: ShopHeader()),
+        SliverList.list(
+          children: [
+            for (final e in _hours.entries)
+              ListTile(title: Text(e.key), trailing: Text(e.value)),
+          ],
         ),
-        // กดค้าง → แผ่นด้านล่างแสดงคำอธิบาย
-        onLongPress: (item) => showModalBottomSheet<void>(
-          context: context,
-          builder: (_) => ListTile(
-            contentPadding: const EdgeInsets.all(24),
-            title: Text(item.name),
-            subtitle: Text(item.description),
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

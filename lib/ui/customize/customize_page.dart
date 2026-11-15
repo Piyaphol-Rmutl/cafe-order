@@ -6,9 +6,12 @@ import 'validators.dart';
 
 /// ฟอร์มปรับแต่งเครื่องดื่ม: StatefulWidget เพราะค่าที่เลือกเปลี่ยนได้
 class CustomizePage extends StatefulWidget {
-  const CustomizePage({super.key, required this.item});
+  const CustomizePage({super.key, required this.item, this.onSubmit});
 
   final MenuItem item; // ค่าคงที่จากพ่อ อ่านผ่าน widget.item
+
+  /// ถ้ากำหนด (โหมดสองบาน) เรียกฟังก์ชันนี้ ถ้าไม่กำหนดจะ pop พร้อมผลลัพธ์
+  final ValueChanged<OrderItem>? onSubmit;
 
   @override
   State<CustomizePage> createState() => _CustomizePageState();
@@ -57,13 +60,11 @@ class _CustomizePageState extends State<CustomizePage> {
       return;
     }
     final item = _draft;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'เพิ่ม ${item.item.name} ×${item.quantity} (${item.priceText}) แล้ว',
-        ),
-      ),
-    );
+    if (widget.onSubmit != null) {
+      widget.onSubmit!(item);
+    } else {
+      Navigator.of(context).pop(item); // ส่งผลลัพธ์กลับไปหน้าที่เปิดมา
+    }
   }
 
   @override

@@ -53,56 +53,60 @@ class MenuTile extends StatelessWidget {
 
 /// การ์ดเมนูสำหรับมุมมองกริด (GridView) ใช้ Stack วางป้ายหมวดทับรูป
 class MenuGridCard extends StatelessWidget {
-  const MenuGridCard({super.key, required this.item});
+  const MenuGridCard({super.key, required this.item, this.onTap});
 
   final MenuItem item;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                MenuImage(item: item),
-                Positioned(
-                  top: 8,
-                  left: 8,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: scheme.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      item.category.label,
-                      style: TextStyle(color: scheme.onPrimary, fontSize: 12),
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  MenuImage(item: item),
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: scheme.primary,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        item.category.label,
+                        style: TextStyle(color: scheme.onPrimary, fontSize: 12),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(item.name, overflow: TextOverflow.ellipsis),
-                ),
-                Text('${item.price}.-'),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(item.name, overflow: TextOverflow.ellipsis),
+                  ),
+                  Text('${item.price}.-'),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

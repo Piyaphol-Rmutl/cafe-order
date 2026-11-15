@@ -5,6 +5,7 @@ import 'w01_lifecycle.dart';
 import 'w04_layout.dart';
 import 'w05_gestures.dart';
 import 'w05_state_lifecycle.dart';
+import 'w06_navigator.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -32,6 +33,11 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w05',
     title: 'ท่าทาง: แตะ กดค้าง ปัด',
     builder: (_) => const GestureDemo(),
+  ),
+  (
+    week: 'w06',
+    title: 'Navigator push/pop รับผลลัพธ์',
+    builder: (_) => const NavigatorDemo(),
   ),
 ];
 

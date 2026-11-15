@@ -39,9 +39,10 @@ class MenuList extends StatelessWidget {
 
 /// กริดเมนู: กำหนดความกว้างสูงสุดของช่อง จำนวนคอลัมน์จึงปรับตามจอ
 class MenuGrid extends StatelessWidget {
-  const MenuGrid({super.key, required this.menu});
+  const MenuGrid({super.key, required this.menu, this.onSelect});
 
   final List<MenuItem> menu;
+  final ValueChanged<MenuItem>? onSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,10 @@ class MenuGrid extends StatelessWidget {
         childAspectRatio: 0.8,
       ),
       itemCount: menu.length,
-      itemBuilder: (context, index) => MenuGridCard(item: menu[index]),
+      itemBuilder: (context, index) => MenuGridCard(
+        item: menu[index],
+        onTap: onSelect == null ? null : () => onSelect!(menu[index]),
+      ),
     );
   }
 }

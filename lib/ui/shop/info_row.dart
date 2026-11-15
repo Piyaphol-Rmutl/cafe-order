@@ -15,7 +15,7 @@ class InfoRow extends StatelessWidget {
         children: [
           Icon(icon, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 12),
-          Text(text),
+          Expanded(child: Text(text)), // ข้อความยาวตัดบรรทัด ไม่ล้น
         ],
       ),
     );

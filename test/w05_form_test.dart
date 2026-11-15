@@ -49,10 +49,27 @@ void main() {
     expect(find.text('ใส่ตะกร้า · 180 บาท'), findsOneWidget); // (75+15)*2
   });
 
-  testWidgets('ไม่กรอกชื่อ → แสดงข้อผิดพลาด, กรอกแล้ว → SnackBar', (
+  testWidgets('ไม่กรอกชื่อ → แสดงข้อผิดพลาด, กรอกแล้ว → ส่ง OrderItem กลับ', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(CustomizePage(item: latte)));
+    OrderItem? result;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () async {
+              result = await Navigator.of(context).push<OrderItem>(
+                MaterialPageRoute(builder: (_) => CustomizePage(item: latte)),
+              );
+            },
+            child: const Text('เปิด'),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('เปิด'));
+    await tester.pumpAndSettle();
+
     final button = find.byType(FilledButton);
     await tester.tap(button);
     await tester.pumpAndSettle(); // รอเลื่อนไปที่ช่องชื่อ
@@ -75,9 +92,10 @@ void main() {
     );
     await tester.enterText(name, 'ต้น');
     await tester.tap(button);
-    await tester.pump();
-    expect(find.text('กรุณากรอกชื่อบนแก้ว'), findsNothing);
-    expect(find.text('เพิ่ม ลาเต้ ×1 (65 บาท) แล้ว'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.byType(CustomizePage), findsNothing); // ปิดหน้าแล้ว
+    expect(result?.cupName, 'ต้น');
+    expect(result?.total, 65);
   });
 
   testWidgets('เบเกอรี่ไม่มีตัวเลือกขนาดแก้ว', (tester) async {
@@ -86,9 +104,7 @@ void main() {
     expect(find.text('ใส่ตะกร้า · 35 บาท'), findsOneWidget);
   });
 
-  testWidgets('แตะเมนูในหน้าแรก → หน้าปรับแต่ง, กดค้าง → คำอธิบาย', (
-    tester,
-  ) async {
+  testWidgets('แตะเมนู → หน้าปรับแต่ง, กดค้าง → คำอธิบาย', (tester) async {
     await tester.pumpWidget(const CafeOrderApp());
     final americano = find.text('อเมริกาโน');
     await tester.scrollUntilVisible(
@@ -99,7 +115,8 @@ void main() {
     await tester.longPress(americano);
     await tester.pumpAndSettle();
     expect(find.byType(BottomSheet), findsOneWidget);
-    await tester.tapAt(const Offset(10, 10)); // ปิดแผ่นด้านล่าง
+    // ปิดแผ่นด้านล่าง
+    Navigator.of(tester.element(find.byType(BottomSheet))).pop();
     await tester.pumpAndSettle();
 
     await tester.tap(americano);

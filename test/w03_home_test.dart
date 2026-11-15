@@ -1,11 +1,12 @@
 import 'package:cafe_order/main.dart';
-import 'package:cafe_order/ui/home/info_row.dart';
+import 'package:cafe_order/ui/shop/info_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('หน้าแรกมีโลโก้ ชื่อร้าน InfoRow และเมนูแนะนำ', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    // สัปดาห์ 6 ย้ายหน้าร้านไปอยู่แท็บ /shop
+    await tester.pumpWidget(const CafeOrderApp(initialLocation: '/shop'));
 
     final logo = find.byWidgetPredicate(
       (w) =>
@@ -19,5 +20,8 @@ void main() {
     expect(find.byType(InfoRow), findsNWidgets(3));
     expect(find.byIcon(Icons.schedule), findsOneWidget);
     expect(find.text('เมนูแนะนำ: ลาเต้'), findsOneWidget);
+    // แท็บร้านมีแถบหัวเดียว (SliverAppBar.large) ไม่ซ้อนกับแถบหัวของเชลล์
+    expect(find.byType(AppBar), findsOneWidget);
+    expect(find.text('Café Order'), findsNothing);
   });
 }

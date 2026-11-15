@@ -9,7 +9,12 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   testWidgets('ListView.builder สร้างแถวเมนูเมื่อเลื่อนถึง', (tester) async {
     await tester.pumpWidget(const CafeOrderApp());
-    final list = find.byType(Scrollable).first;
+    final list = find
+        .descendant(
+          of: find.byType(MenuList),
+          matching: find.byType(Scrollable),
+        )
+        .first;
     await tester.scrollUntilVisible(
       find.text('ครัวซองต์เนยสด'),
       300,
