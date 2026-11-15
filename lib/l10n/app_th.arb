@@ -108,5 +108,23 @@
   "trackOrder": "ติดตามสถานะ",
   "noActiveOrders": "ไม่มีคำสั่งซื้อที่รอทำ",
   "orderNotFound": "ไม่พบคำสั่งซื้อ",
-  "orderStatusError": "โหลดสถานะคำสั่งซื้อไม่สำเร็จ"
+  "orderStatusError": "โหลดสถานะคำสั่งซื้อไม่สำเร็จ",
+  "nearestBranch": "หาสาขาใกล้ฉัน",
+  "findingLocation": "กำลังหาตำแหน่ง…",
+  "openSettings": "เปิดการตั้งค่า",
+  "distanceKm": "{km} กม.",
+  "review": "รีวิว",
+  "takePhoto": "ถ่ายภาพ",
+  "pickPhoto": "เลือกจากคลังภาพ",
+  "photoError": "เปิดกล้องหรือคลังภาพไม่ได้ ตรวจสอบสิทธิ์ในการตั้งค่า",
+  "comment": "ความเห็น",
+  "saveReview": "บันทึกรีวิว",
+  "reviewSaved": "บันทึกรีวิวแล้ว",
+  "@distanceKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  }
 }

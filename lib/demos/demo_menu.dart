@@ -10,6 +10,8 @@ import 'w07_animation.dart';
 import 'w07_cupertino.dart';
 import 'w08_listenable_builder.dart';
 import 'w08_inherited.dart';
+import 'w13_device_channel.dart';
+import 'w13_sensors.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -62,6 +64,16 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w08',
     title: 'InheritedWidget',
     builder: (_) => const InheritedDemo(),
+  ),
+  (
+    week: 'w13',
+    title: 'MethodChannel: แบตเตอรี่/สั่น',
+    builder: (_) => const DeviceChannelDemo(),
+  ),
+  (
+    week: 'w13',
+    title: 'เซนเซอร์ความเร่ง (sensors_plus)',
+    builder: (_) => const SensorsDemo(),
   ),
 ];
 

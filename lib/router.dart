@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'data/repositories/branch_repository.dart';
 import 'data/repositories/order_repository.dart';
+import 'data/services/location_service.dart';
 import 'ui/auth/auth_view_model.dart';
 import 'ui/auth/login_page.dart';
 import 'ui/barista/barista_page.dart';
+import 'ui/branches/nearest_branch_page.dart';
+import 'ui/branches/nearest_branch_view_model.dart';
 import 'ui/cart/cart_page.dart';
 import 'ui/customize/customize_page.dart';
 import 'ui/menu/menu_page.dart';
@@ -13,6 +17,7 @@ import 'ui/menu/menu_view_model.dart';
 import 'ui/orders/order_history_page.dart';
 import 'ui/orders/order_history_view_model.dart';
 import 'ui/orders/order_status_page.dart';
+import 'ui/review/review_page.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell/app_shell.dart';
 import 'ui/shop/shop_page.dart';
@@ -44,6 +49,21 @@ GoRouter createRouter({
         path: '/status/:id',
         builder: (context, state) =>
             OrderStatusPage(orderId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/branches',
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) => NearestBranchViewModel(
+            context.read<LocationService>(),
+            context.read<BranchRepository>(),
+          )..load(),
+          child: const NearestBranchPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/review/:id',
+        builder: (context, state) =>
+            ReviewPage(orderId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/barista',

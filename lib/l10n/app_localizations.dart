@@ -379,6 +379,72 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'โหลดสถานะคำสั่งซื้อไม่สำเร็จ'**
   String get orderStatusError;
+
+  /// No description provided for @nearestBranch.
+  ///
+  /// In th, this message translates to:
+  /// **'หาสาขาใกล้ฉัน'**
+  String get nearestBranch;
+
+  /// No description provided for @findingLocation.
+  ///
+  /// In th, this message translates to:
+  /// **'กำลังหาตำแหน่ง…'**
+  String get findingLocation;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In th, this message translates to:
+  /// **'เปิดการตั้งค่า'**
+  String get openSettings;
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In th, this message translates to:
+  /// **'{km} กม.'**
+  String distanceKm(String km);
+
+  /// No description provided for @review.
+  ///
+  /// In th, this message translates to:
+  /// **'รีวิว'**
+  String get review;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In th, this message translates to:
+  /// **'ถ่ายภาพ'**
+  String get takePhoto;
+
+  /// No description provided for @pickPhoto.
+  ///
+  /// In th, this message translates to:
+  /// **'เลือกจากคลังภาพ'**
+  String get pickPhoto;
+
+  /// No description provided for @photoError.
+  ///
+  /// In th, this message translates to:
+  /// **'เปิดกล้องหรือคลังภาพไม่ได้ ตรวจสอบสิทธิ์ในการตั้งค่า'**
+  String get photoError;
+
+  /// No description provided for @comment.
+  ///
+  /// In th, this message translates to:
+  /// **'ความเห็น'**
+  String get comment;
+
+  /// No description provided for @saveReview.
+  ///
+  /// In th, this message translates to:
+  /// **'บันทึกรีวิว'**
+  String get saveReview;
+
+  /// No description provided for @reviewSaved.
+  ///
+  /// In th, this message translates to:
+  /// **'บันทึกรีวิวแล้ว'**
+  String get reviewSaved;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,7 @@
 library;
 
 export 'src/branch.dart';
+export 'src/geo.dart';
 export 'src/menu_item.dart';
 export 'src/menu_loader.dart';
 export 'src/options.dart';

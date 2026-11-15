@@ -1,5 +1,6 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/repositories/branch_repository.dart';
@@ -57,6 +58,12 @@ class _ShopPageState extends State<ShopPage> {
             for (final e in _hours.entries)
               ListTile(title: Text(e.key), trailing: Text(e.value)),
             const Divider(),
+            // สัปดาห์ 13: หาสาขาใกล้ที่สุดด้วยตำแหน่งของเครื่อง
+            ListTile(
+              leading: const Icon(Icons.near_me),
+              title: Text(context.l10n.nearestBranch),
+              onTap: () => context.push('/branches'),
+            ),
             // FutureBuilder: แสดงตามสถานะของ Future (กำลังโหลด / ข้อมูล / ผิดพลาด)
             FutureBuilder<List<Branch>>(
               future: _branches,

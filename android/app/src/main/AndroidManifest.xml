@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- สัปดาห์ 13: สิทธิ์ที่แอปขอ (ขอเท่าที่จำเป็น) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:label="cafe_order"
         android:name="${applicationName}"

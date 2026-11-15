@@ -171,4 +171,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderStatusError => 'Could not load the order status';
+
+  @override
+  String get nearestBranch => 'Find nearest branch';
+
+  @override
+  String get findingLocation => 'Finding your location…';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String distanceKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get takePhoto => 'Take photo';
+
+  @override
+  String get pickPhoto => 'Choose from library';
+
+  @override
+  String get photoError =>
+      'Could not open the camera or photo library. Check permissions in Settings';
+
+  @override
+  String get comment => 'Comment';
+
+  @override
+  String get saveReview => 'Save review';
+
+  @override
+  String get reviewSaved => 'Review saved';
 }

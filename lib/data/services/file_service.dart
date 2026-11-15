@@ -25,4 +25,15 @@ class FileService {
     final file = await _file(name);
     return await file.exists() ? file.readAsString() : null;
   }
+
+  /// คัดลอกไฟล์ (เช่น ภาพจาก image_picker ซึ่งอยู่ในโฟลเดอร์ชั่วคราว) มาเก็บถาวร
+  /// พาธเต็มของไฟล์ [name] ในโฟลเดอร์เอกสาร ณ ตอนนี้
+  /// (พาธของโฟลเดอร์เปลี่ยนได้เมื่อติดตั้งหรืออัปเดตแอปบน iOS จึงควรเก็บเพียงชื่อ)
+  Future<String> pathOf(String name) async => (await _file(name)).path;
+
+  Future<String> copyIn(String sourcePath, String name) async {
+    final target = await _file(name);
+    await target.parent.create(recursive: true);
+    return (await File(sourcePath).copy(target.path)).path;
+  }
 }

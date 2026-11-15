@@ -8,6 +8,8 @@ import 'package:cafe_order/data/repositories/menu_repository.dart';
 import 'package:cafe_order/data/repositories/order_repository.dart';
 import 'package:cafe_order/data/services/api_exception.dart';
 import 'package:cafe_order/data/services/auth_service.dart';
+import 'package:cafe_order/data/services/location_service.dart';
+import 'package:cafe_order/data/services/photo_service.dart';
 
 /// Repository ปลอมสำหรับทดสอบ: ทำงานในหน่วยความจำ ไม่มีปลั๊กอิน ไม่มีหน่วงเวลา
 
@@ -169,4 +171,34 @@ class InMemoryLiveOrders extends InMemoryOrderRepository
     orders[i] = orders[i].copyWith(status: status);
     _changes.add(null);
   }
+}
+
+/// ตำแหน่งปลอม: ค่าเริ่มต้นอยู่หน้าหอพัก หรือกำหนดให้ล้มเหลวได้
+class FakeLocationService implements LocationService {
+  FakeLocationService({this.here = (lat: 18.8030, lng: 98.9510), this.failure});
+
+  ({double lat, double lng}) here;
+  LocationFailure? failure;
+  int settingsOpened = 0;
+
+  @override
+  Future<({double lat, double lng})> current() async {
+    if (failure != null) throw LocationException(failure!);
+    return here;
+  }
+
+  @override
+  Future<bool> openSettings() async {
+    settingsOpened++;
+    return true;
+  }
+}
+
+class FakePhotoService implements PhotoService {
+  FakePhotoService([this.path]);
+
+  String? path; // null = ผู้ใช้ยกเลิก
+
+  @override
+  Future<String?> pick({required bool fromCamera}) async => path;
 }

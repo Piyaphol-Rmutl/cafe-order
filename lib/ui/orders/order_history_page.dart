@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n_ext.dart';
@@ -44,7 +45,11 @@ class OrderHistoryPage extends StatelessWidget {
                         .map((i) => '${i.item.nameFor(context)} ×${i.quantity}')
                         .join(', '),
                   ),
-                  trailing: Text(order.status.label),
+                  trailing: IconButton(
+                    tooltip: l10n.review,
+                    icon: const Icon(Icons.rate_review),
+                    onPressed: () => context.push('/review/${order.id}'),
+                  ),
                   onTap: () => _showReceipt(context, order.id),
                 );
               },

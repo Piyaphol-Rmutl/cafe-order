@@ -46,5 +46,16 @@
   "trackOrder": "Track order",
   "noActiveOrders": "No active orders",
   "orderNotFound": "Order not found",
-  "orderStatusError": "Could not load the order status"
+  "orderStatusError": "Could not load the order status",
+  "nearestBranch": "Find nearest branch",
+  "findingLocation": "Finding your location…",
+  "openSettings": "Open settings",
+  "distanceKm": "{km} km",
+  "review": "Review",
+  "takePhoto": "Take photo",
+  "pickPhoto": "Choose from library",
+  "photoError": "Could not open the camera or photo library. Check permissions in Settings",
+  "comment": "Comment",
+  "saveReview": "Save review",
+  "reviewSaved": "Review saved"
 }

@@ -122,4 +122,19 @@ void main() {
       );
     });
   });
+
+  group('ระยะทาง (สัปดาห์ 13)', () {
+    test('distanceMeters: จุดเดียวกัน = 0, 0.01 องศาละติจูด ≈ 1.11 กม.', () {
+      expect(distanceMeters(18.8, 98.95, 18.8, 98.95), 0);
+      expect(distanceMeters(18.80, 98.95, 18.81, 98.95), closeTo(1112, 5));
+    });
+
+    test('nearestBranches เรียงจากใกล้ไปไกล', () {
+      // ยืนอยู่ใกล้หอพัก
+      final sorted = nearestBranches(18.8030, 98.9510, sampleBranches);
+      expect(sorted.first.$1.id, 'dorm');
+      expect(sorted.first.$2, lessThan(50));
+      expect(sorted.last.$1.id, 'library');
+    });
+  });
 }

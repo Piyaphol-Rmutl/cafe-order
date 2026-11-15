@@ -6,8 +6,11 @@ import 'data/repositories/favorite_repository.dart';
 import 'data/repositories/live_order_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
+import 'data/repositories/review_repository.dart';
 import 'data/repositories/settings_repository.dart';
 import 'data/services/auth_service.dart';
+import 'data/services/location_service.dart';
+import 'data/services/photo_service.dart';
 import 'main.dart';
 import 'ui/auth/auth_view_model.dart';
 import 'ui/cart/cart_view_model.dart';
@@ -23,6 +26,9 @@ class AppDependencies {
     required this.settings,
     required this.branches,
     required this.auth,
+    required this.location,
+    required this.photos,
+    required this.reviews,
     this.live,
   });
 
@@ -32,6 +38,9 @@ class AppDependencies {
   final SettingsRepository settings;
   final BranchRepository branches;
   final AuthService auth;
+  final LocationService location; // สัปดาห์ 13
+  final PhotoService photos;
+  final ReviewRepository reviews;
   final LiveOrderRepository? live; // null = ไม่มีสถานะเรียลไทม์
 }
 
@@ -44,6 +53,9 @@ Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
       Provider<OrderRepository>.value(value: deps.orders),
       Provider<BranchRepository>.value(value: deps.branches),
       Provider<LiveOrderRepository?>.value(value: deps.live),
+      Provider<LocationService>.value(value: deps.location),
+      Provider<PhotoService>.value(value: deps.photos),
+      Provider<ReviewRepository>.value(value: deps.reviews),
       ChangeNotifierProvider(create: (_) => AuthViewModel(deps.auth)),
       // ชั้น ViewModel ระดับแอป
       ChangeNotifierProvider(

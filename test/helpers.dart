@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cafe_order/app_dependencies.dart';
+import 'package:cafe_order/data/repositories/review_repository.dart';
 import 'package:cafe_order/data/repositories/settings_repository.dart';
+import 'package:cafe_order/data/services/file_service.dart';
 import 'package:cafe_order/data/services/prefs_service.dart';
 import 'package:cafe_order/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +30,9 @@ Future<Widget> cafeApp({
   FakeBranchRepository? branches,
   FakeAuthService? auth,
   InMemoryLiveOrders? live,
+  FakeLocationService? location,
+  FakePhotoService? photos,
+  ReviewRepository? reviews,
   Map<String, Object> prefs = const {},
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
@@ -36,6 +43,13 @@ Future<Widget> cafeApp({
       orders: live ?? orders ?? InMemoryOrderRepository(),
       live: live,
       auth: auth ?? FakeAuthService(),
+      location: location ?? FakeLocationService(),
+      photos: photos ?? FakePhotoService(),
+      reviews:
+          reviews ??
+          ReviewRepository(
+            FileService(directory: () async => Directory.systemTemp),
+          ),
       favorites: favorites ?? InMemoryFavoriteRepository(),
       settings: SettingsRepository(prefsService),
       branches: branches ?? FakeBranchRepository(),

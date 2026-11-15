@@ -170,4 +170,40 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get orderStatusError => 'โหลดสถานะคำสั่งซื้อไม่สำเร็จ';
+
+  @override
+  String get nearestBranch => 'หาสาขาใกล้ฉัน';
+
+  @override
+  String get findingLocation => 'กำลังหาตำแหน่ง…';
+
+  @override
+  String get openSettings => 'เปิดการตั้งค่า';
+
+  @override
+  String distanceKm(String km) {
+    return '$km กม.';
+  }
+
+  @override
+  String get review => 'รีวิว';
+
+  @override
+  String get takePhoto => 'ถ่ายภาพ';
+
+  @override
+  String get pickPhoto => 'เลือกจากคลังภาพ';
+
+  @override
+  String get photoError =>
+      'เปิดกล้องหรือคลังภาพไม่ได้ ตรวจสอบสิทธิ์ในการตั้งค่า';
+
+  @override
+  String get comment => 'ความเห็น';
+
+  @override
+  String get saveReview => 'บันทึกรีวิว';
+
+  @override
+  String get reviewSaved => 'บันทึกรีวิวแล้ว';
 }

@@ -9,12 +9,15 @@ import 'data/repositories/favorite_repository.dart';
 import 'data/repositories/firestore_order_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
+import 'data/repositories/review_repository.dart';
 import 'data/repositories/settings_repository.dart';
 import 'data/services/api_service.dart';
 import 'data/services/auth_service.dart';
 import 'data/services/database_service.dart';
 import 'data/services/file_service.dart';
 import 'data/services/firebase_setup.dart';
+import 'data/services/location_service.dart';
+import 'data/services/photo_service.dart';
 import 'data/services/prefs_service.dart';
 import 'l10n/app_localizations.dart';
 import 'router.dart';
@@ -46,6 +49,9 @@ Future<void> main() async {
         orders: orders, // สัปดาห์ 11 ใช้ ApiOrderRepository
         live: orders,
         auth: auth,
+        location: const GeolocatorLocationService(), // สัปดาห์ 13
+        photos: ImagePickerPhotoService(),
+        reviews: ReviewRepository(files),
         branches: ApiBranchRepository(api),
         favorites: SqliteFavoriteRepository(db),
         settings: SettingsRepository(prefs),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/repositories/live_order_repository.dart';
+import '../../data/services/device_channel.dart';
 import '../l10n_ext.dart';
 import '../widgets/brewing_indicator.dart';
 
@@ -19,9 +20,20 @@ class OrderStatusPage extends StatefulWidget {
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
   // สร้าง Stream ครั้งเดียว ไม่สร้างใหม่ทุกครั้งที่ build
+  // สัปดาห์ 13: สั่นเครื่องเมื่อสถานะเปลี่ยนเป็น "พร้อมรับ" (MethodChannel)
+  OrderStatus? _previous;
   late final Stream<Order?> _order = context
       .read<LiveOrderRepository?>()!
-      .watchOrder(widget.orderId);
+      .watchOrder(widget.orderId)
+      .map((order) {
+        if (order?.status == OrderStatus.ready &&
+            _previous != null &&
+            _previous != OrderStatus.ready) {
+          const CafeDeviceChannel().vibrate();
+        }
+        _previous = order?.status;
+        return order;
+      });
 
   @override
   Widget build(BuildContext context) {
