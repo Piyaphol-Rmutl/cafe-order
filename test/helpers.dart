@@ -45,6 +45,7 @@ Future<Widget> cafeApp({
       auth: auth ?? FakeAuthService(),
       location: location ?? FakeLocationService(),
       photos: photos ?? FakePhotoService(),
+      loyalty: FakeLoyaltyRepository(),
       reviews:
           reviews ??
           ReviewRepository(

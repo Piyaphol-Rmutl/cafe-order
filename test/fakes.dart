@@ -4,6 +4,7 @@ import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/data/repositories/branch_repository.dart';
 import 'package:cafe_order/data/repositories/favorite_repository.dart';
 import 'package:cafe_order/data/repositories/live_order_repository.dart';
+import 'package:cafe_order/data/repositories/loyalty_repository.dart';
 import 'package:cafe_order/data/repositories/menu_repository.dart';
 import 'package:cafe_order/data/repositories/order_repository.dart';
 import 'package:cafe_order/data/services/api_exception.dart';
@@ -201,4 +202,9 @@ class FakePhotoService implements PhotoService {
 
   @override
   Future<String?> pick({required bool fromCamera}) async => path;
+}
+
+class FakeLoyaltyRepository implements LoyaltyRepository {
+  @override
+  Future<int> fetchPoints() async => 120;
 }

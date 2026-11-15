@@ -17,10 +17,14 @@ class MenuImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // สัปดาห์ 15: ถอดรหัสภาพเท่าขนาดที่แสดงจริง (ภาพต้นฉบับ 800×800)
+    // ภาพ 72 จุดบนจอ 3x ใช้ 216 พิกเซลแทน 800 → ใช้หน่วยความจำน้อยลงราว 14 เท่า
+    final dpr = MediaQuery.devicePixelRatioOf(context);
     final image = Image.asset(
       'assets/menu/${item.id}.png',
       width: size,
       height: size,
+      cacheWidth: size == null ? null : (size! * dpr).round(),
       fit: BoxFit.cover,
       excludeFromSemantics: true, // รูปประกอบ ไม่ต้องให้โปรแกรมอ่านจอพูด
     );

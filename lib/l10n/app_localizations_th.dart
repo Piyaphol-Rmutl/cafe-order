@@ -206,4 +206,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get reviewSaved => 'บันทึกรีวิวแล้ว';
+
+  @override
+  String points(int points) {
+    return 'แต้มสะสม $points แต้ม';
+  }
 }

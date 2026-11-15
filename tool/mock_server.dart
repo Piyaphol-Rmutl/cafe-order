@@ -7,6 +7,8 @@
 //   GET  /branches      รายการสาขา
 //   POST /orders        สร้างคำสั่งซื้อ  body: {"items": [OrderItem.toJson()...]}
 //   GET  /orders/{id}   คำสั่งซื้อตามรหัส
+//   POST /devices       ลงทะเบียนเครื่อง ได้โทเค็น (สัปดาห์ 15)
+//   GET  /me/points     แต้มสะสม ต้องแนบ Authorization: Bearer <โทเค็น>
 import 'dart:convert';
 import 'dart:io';
 
@@ -23,6 +25,7 @@ Response _json(int status, Object? body) => Response(
 /// สร้าง Handler (ชุดทดสอบเรียกใช้ตรง ๆ ได้โดยไม่เปิดพอร์ต)
 Handler createHandler({Duration delay = Duration.zero, bool fail = false}) {
   final orders = <String, Order>{};
+  final devices = <String, int>{}; // โทเค็น → แต้มสะสม
 
   Future<Response> handle(Request req) async {
     if (delay > Duration.zero) await Future<void>.delayed(delay);
@@ -57,6 +60,17 @@ Handler createHandler({Duration delay = Duration.zero, bool fail = false}) {
         final order = Order(id: id, items: items);
         orders[id] = order;
         return _json(201, order.toJson());
+      case 'POST /devices':
+        final token = 'dev-${DateTime.now().microsecondsSinceEpoch}';
+        devices[token] = 120; // แต้มตั้งต้นสำหรับสาธิต
+        return _json(201, {'token': token});
+      case 'GET /me' when seg.length == 2 && seg[1] == 'points':
+        final auth = req.headers['authorization'] ?? '';
+        final token = auth.startsWith('Bearer ') ? auth.substring(7) : '';
+        final points = devices[token];
+        return points == null
+            ? _json(401, {'error': 'ต้องยืนยันตัวตน'})
+            : _json(200, {'points': points});
       default:
         return _json(404, {'error': 'ไม่พบเส้นทาง $route'});
     }

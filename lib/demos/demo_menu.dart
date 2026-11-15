@@ -13,6 +13,7 @@ import 'w08_inherited.dart';
 import 'w13_device_channel.dart';
 import 'w13_sensors.dart';
 import 'w14_debugging.dart';
+import 'w15_jank.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -80,6 +81,11 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w14',
     title: 'ฝึกดีบัก: ตะกร้าที่มีบั๊ก',
     builder: (_) => const DebuggingDemo(),
+  ),
+  (
+    week: 'w15',
+    title: 'ประสิทธิภาพ: รายการช้า vs ปรับแล้ว',
+    builder: (_) => const JankDemo(),
   ),
 ];
 

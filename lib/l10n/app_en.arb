@@ -57,5 +57,6 @@
   "photoError": "Could not open the camera or photo library. Check permissions in Settings",
   "comment": "Comment",
   "saveReview": "Save review",
-  "reviewSaved": "Review saved"
+  "reviewSaved": "Review saved",
+  "points": "{points} points"
 }

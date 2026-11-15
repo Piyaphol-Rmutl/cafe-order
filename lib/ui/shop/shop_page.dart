@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/repositories/branch_repository.dart';
+import '../../data/repositories/loyalty_repository.dart';
 import '../l10n_ext.dart';
 import 'info_row.dart';
 
@@ -58,6 +59,7 @@ class _ShopPageState extends State<ShopPage> {
             for (final e in _hours.entries)
               ListTile(title: Text(e.key), trailing: Text(e.value)),
             const Divider(),
+            const PointsTile(), // สัปดาห์ 15: API ที่ต้องแนบโทเค็น
             // สัปดาห์ 13: หาสาขาใกล้ที่สุดด้วยตำแหน่งของเครื่อง
             ListTile(
               leading: const Icon(Icons.near_me),
@@ -140,6 +142,32 @@ class ShopHeader extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// แต้มสะสม: ApiService แนบโทเค็นจาก secure storage ให้เอง
+class PointsTile extends StatefulWidget {
+  const PointsTile({super.key});
+
+  @override
+  State<PointsTile> createState() => _PointsTileState();
+}
+
+class _PointsTileState extends State<PointsTile> {
+  late final Future<int> _points =
+      context.read<LoyaltyRepository>().fetchPoints()..ignore();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<int>(
+      future: _points,
+      builder: (context, snapshot) => ListTile(
+        leading: const Icon(Icons.loyalty),
+        title: Text(
+          snapshot.hasData ? context.l10n.points(snapshot.data!) : '…',
+        ),
       ),
     );
   }

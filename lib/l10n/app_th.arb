@@ -126,5 +126,13 @@
         "type": "String"
       }
     }
+  },
+  "points": "แต้มสะสม {points} แต้ม",
+  "@points": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
   }
 }

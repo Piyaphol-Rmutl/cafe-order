@@ -1,0 +1,7 @@
+# คัดลอกเป็น android/key.properties แล้วแก้ค่า (ไฟล์จริงอยู่ใน .gitignore ห้าม commit)
+# สร้างกุญแจทดสอบ:
+#   keytool -genkey -v -keystore ~/cafe-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+storePassword=<รหัสผ่านของ keystore>
+keyPassword=<รหัสผ่านของกุญแจ>
+keyAlias=upload
+storeFile=/absolute/path/to/cafe-upload.jks

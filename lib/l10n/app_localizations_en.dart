@@ -207,4 +207,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewSaved => 'Review saved';
+
+  @override
+  String points(int points) {
+    return '$points points';
+  }
 }

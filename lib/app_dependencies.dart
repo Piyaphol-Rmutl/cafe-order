@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
 import 'data/repositories/live_order_repository.dart';
+import 'data/repositories/loyalty_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
 import 'data/repositories/review_repository.dart';
@@ -29,6 +30,7 @@ class AppDependencies {
     required this.location,
     required this.photos,
     required this.reviews,
+    required this.loyalty,
     this.live,
   });
 
@@ -41,6 +43,7 @@ class AppDependencies {
   final LocationService location; // สัปดาห์ 13
   final PhotoService photos;
   final ReviewRepository reviews;
+  final LoyaltyRepository loyalty; // สัปดาห์ 15
   final LiveOrderRepository? live; // null = ไม่มีสถานะเรียลไทม์
 }
 
@@ -56,6 +59,7 @@ Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
       Provider<LocationService>.value(value: deps.location),
       Provider<PhotoService>.value(value: deps.photos),
       Provider<ReviewRepository>.value(value: deps.reviews),
+      Provider<LoyaltyRepository>.value(value: deps.loyalty),
       ChangeNotifierProvider(create: (_) => AuthViewModel(deps.auth)),
       // ชั้น ViewModel ระดับแอป
       ChangeNotifierProvider(

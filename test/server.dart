@@ -8,9 +8,10 @@ import '../tool/mock_server.dart';
 
 const baseUrl = 'http://test.local';
 
-MockClient fakeServer({bool fail = false}) {
+/// ฟังก์ชันตอบคำร้องขอด้วย Handler ของ tool/mock_server.dart
+MockClientHandler serverHandler({bool fail = false}) {
   final handler = createHandler(fail: fail);
-  return MockClient((req) async {
+  return (req) async {
     final res = await handler(
       shelf.Request(
         req.method,
@@ -24,5 +25,8 @@ MockClient fakeServer({bool fail = false}) {
       res.statusCode,
       headers: res.headers,
     );
-  });
+  };
 }
+
+MockClient fakeServer({bool fail = false}) =>
+    MockClient(serverHandler(fail: fail));

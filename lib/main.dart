@@ -6,6 +6,7 @@ import 'app_dependencies.dart';
 import 'config.dart';
 import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
+import 'data/repositories/loyalty_repository.dart';
 import 'data/repositories/firestore_order_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
@@ -18,6 +19,7 @@ import 'data/services/file_service.dart';
 import 'data/services/firebase_setup.dart';
 import 'data/services/location_service.dart';
 import 'data/services/photo_service.dart';
+import 'data/services/token_store.dart';
 import 'data/services/prefs_service.dart';
 import 'l10n/app_localizations.dart';
 import 'router.dart';
@@ -32,7 +34,10 @@ Future<void> main() async {
   final db = await DatabaseService.open();
   final prefs = await PrefsService.create();
   final files = FileService();
-  final api = ApiService(baseUrl: apiBaseUrl); // สัปดาห์ 11
+  final api = ApiService(
+    baseUrl: apiBaseUrl, // สัปดาห์ 11 (release ควรเป็น https://)
+    tokens: SecureTokenStore(), // สัปดาห์ 15
+  );
   final (firebaseAuth, firestore) = await initFirebase(); // สัปดาห์ 12
   final auth = FirebaseAuthService(firebaseAuth);
   final orders = FirestoreOrderRepository(
@@ -52,6 +57,7 @@ Future<void> main() async {
         location: const GeolocatorLocationService(), // สัปดาห์ 13
         photos: ImagePickerPhotoService(),
         reviews: ReviewRepository(files),
+        loyalty: ApiLoyaltyRepository(api),
         branches: ApiBranchRepository(api),
         favorites: SqliteFavoriteRepository(db),
         settings: SettingsRepository(prefs),

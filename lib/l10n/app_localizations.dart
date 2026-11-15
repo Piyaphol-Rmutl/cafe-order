@@ -445,6 +445,12 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'บันทึกรีวิวแล้ว'**
   String get reviewSaved;
+
+  /// No description provided for @points.
+  ///
+  /// In th, this message translates to:
+  /// **'แต้มสะสม {points} แต้ม'**
+  String points(int points);
 }
 
 class _AppLocalizationsDelegate
