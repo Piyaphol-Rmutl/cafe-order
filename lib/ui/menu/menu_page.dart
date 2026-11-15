@@ -1,16 +1,16 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../../state/cart_model.dart';
 import '../customize/customize_page.dart';
 import '../l10n_ext.dart';
 import 'menu_list.dart';
 
 /// แท็บเมนู: TabBar แยกตามหมวด + เลย์เอาต์ที่ปรับตามความกว้าง
 class MenuPage extends StatelessWidget {
-  const MenuPage({super.key, required this.onAdd});
-
-  final ValueChanged<OrderItem> onAdd;
+  const MenuPage({super.key});
 
   /// จอแคบ: เปิดหน้าปรับแต่ง แล้วรอผลลัพธ์ที่ส่งกลับมาด้วย pop
   Future<void> _open(BuildContext context, MenuItem item) async {
@@ -20,7 +20,9 @@ class MenuPage extends StatelessWidget {
   }
 
   void _added(BuildContext context, OrderItem result) {
-    onAdd(result);
+    context.read<CartModel>().add(
+      result,
+    ); // เพิ่มผ่านโมเดล ทุกหน้าที่ฟังอยู่อัปเดตเอง
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(context.l10n.addedToCart(result.item.nameFor(context))),

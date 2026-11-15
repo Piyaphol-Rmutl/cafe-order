@@ -1,30 +1,18 @@
-import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../../state/cart_model.dart';
 import '../l10n_ext.dart';
 
-/// แท็บตะกร้า (สัปดาห์ 6): รับรายการผ่านคอนสตรักเตอร์จากรากของแอป
-/// ข้อจำกัด: ลบในหน้านี้แล้ว หน้าอื่นไม่รู้ (แก้ด้วย ChangeNotifier ในสัปดาห์ 8)
-class CartPage extends StatefulWidget {
-  const CartPage({super.key, required this.items});
+/// แท็บตะกร้า (สัปดาห์ 8): StatelessWidget ที่ฟัง CartModel
+/// ลบหรือเปลี่ยนจำนวนที่นี่ badge บนแถบนำทางก็อัปเดตทันที
+class CartPage extends StatelessWidget {
+  const CartPage({super.key});
 
-  final List<OrderItem> items;
-
-  @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  List<OrderItem> get _items => widget.items;
-
-  Future<void> _checkout() async {
-    final order = Order(
-      id: 'A${DateTime.now().millisecondsSinceEpoch % 10000}',
-      items: [..._items],
-    );
-    setState(_items.clear);
+  Future<void> _checkout(BuildContext context) async {
     final l10n = context.l10n;
+    final order = context.read<CartModel>().checkout();
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
@@ -38,42 +26,56 @@ class _CartPageState extends State<CartPage> {
         ],
       ),
     );
-    if (mounted) context.go('/menu');
+    if (context.mounted) context.go('/menu');
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_items.isEmpty) {
-      return Center(child: Text(context.l10n.cartEmpty));
+    final cart = context.watch<CartModel>(); // ฟังการเปลี่ยนแปลงทั้งหมด
+    final l10n = context.l10n;
+    if (cart.isEmpty) {
+      return Center(child: Text(l10n.cartEmpty));
     }
-    final total = _items.fold(0, (sum, i) => sum + i.total);
+    final items = cart.items;
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: _items.length,
+            itemCount: items.length,
             itemBuilder: (context, index) {
-              final line = _items[index];
-              return ListTile(
-                title: Text('${line.item.nameFor(context)} ×${line.quantity}'),
-                subtitle: Text(
-                  [
-                    line.summary,
-                    line.cupName ?? '',
-                  ].where((s) => s.isNotEmpty).join(' · '),
+              final line = items[index];
+              final name = line.item.nameFor(context);
+              // Dismissible: ปัดซ้ายเพื่อลบ
+              return Dismissible(
+                key: ObjectKey(line),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Theme.of(context).colorScheme.errorContainer,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 24),
+                  child: const Icon(Icons.delete),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(context.l10n.price(line.total)),
-                    IconButton(
-                      tooltip: context.l10n.removeItem(
-                        line.item.nameFor(context),
+                onDismissed: (_) => cart.removeAt(index),
+                child: ListTile(
+                  title: Text('$name ×${line.quantity}'),
+                  subtitle: Text(
+                    [
+                      line.summary,
+                      line.cupName ?? '',
+                    ].where((s) => s.isNotEmpty).join(' · '),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l10n.price(line.total)),
+                      IconButton(
+                        tooltip: l10n.removeItem(name),
+                        icon: const Icon(Icons.remove_circle_outline),
+                        onPressed: () =>
+                            cart.setQuantity(index, line.quantity - 1),
                       ),
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: () => setState(() => _items.removeAt(index)),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -82,8 +84,8 @@ class _CartPageState extends State<CartPage> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: FilledButton(
-            onPressed: _checkout,
-            child: Text(context.l10n.checkout(total)),
+            onPressed: () => _checkout(context),
+            child: Text(l10n.checkout(cart.total)),
           ),
         ),
       ],

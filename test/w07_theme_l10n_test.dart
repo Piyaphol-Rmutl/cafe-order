@@ -1,7 +1,6 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/demos/w07_animation.dart';
 import 'package:cafe_order/demos/w07_cupertino.dart';
-import 'package:cafe_order/main.dart';
 import 'package:cafe_order/ui/customize/customize_page.dart';
 import 'package:cafe_order/ui/menu/menu_card.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ Future<void> openSettings(WidgetTester tester) async {
 
 void main() {
   testWidgets('สลับโหมดมืดจากหน้าตั้งค่า', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     await openSettings(tester);
     BuildContext ctx() => tester.element(find.byType(SwitchListTile));
     expect(Theme.of(ctx()).brightness, Brightness.light);
@@ -30,7 +29,7 @@ void main() {
   testWidgets('เปลี่ยนภาษาเป็นอังกฤษ ข้อความและชื่อเมนูเปลี่ยน', (
     tester,
   ) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     await openSettings(tester);
     await tester.tap(find.text('EN'));
     await tester.pumpAndSettle();
@@ -75,7 +74,7 @@ void main() {
   testWidgets('Hero: รูปเมนูมี tag เดียวกันในรายการและหน้าปรับแต่ง', (
     tester,
   ) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     expect(
       find.byWidgetPredicate((w) => w is Hero && w.tag == 'menu-latte'),
       findsOneWidget,

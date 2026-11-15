@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../state/settings_model.dart';
 import '../l10n_ext.dart';
 
-/// หน้าตั้งค่า: โหมดมืดและภาษา (สัปดาห์ 7 ค่าอยู่ที่รากของแอป ส่งผ่าน callback)
+/// หน้าตั้งค่า: โหมดมืดและภาษา (สัปดาห์ 8 อ่าน/แก้ผ่าน SettingsModel)
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({
-    super.key,
-    required this.onThemeModeChanged,
-    required this.onLocaleChanged,
-  });
-
-  final ValueChanged<ThemeMode> onThemeModeChanged;
-  final ValueChanged<Locale> onLocaleChanged;
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final settings = context.read<SettingsModel>(); // แค่เรียกเมธอด ใช้ read
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final lang = Localizations.localeOf(context).languageCode;
     return Scaffold(
@@ -28,7 +24,7 @@ class SettingsPage extends StatelessWidget {
             secondary: const Icon(Icons.dark_mode),
             value: isDark,
             onChanged: (on) =>
-                onThemeModeChanged(on ? ThemeMode.dark : ThemeMode.light),
+                settings.themeMode = on ? ThemeMode.dark : ThemeMode.light,
           ),
           ListTile(
             leading: const Icon(Icons.translate),
@@ -39,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                 ButtonSegment(value: 'en', label: Text('EN')),
               ],
               selected: {lang},
-              onSelectionChanged: (s) => onLocaleChanged(Locale(s.first)),
+              onSelectionChanged: (s) => settings.locale = Locale(s.first),
             ),
           ),
         ],

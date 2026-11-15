@@ -8,6 +8,8 @@ import 'w05_state_lifecycle.dart';
 import 'w06_navigator.dart';
 import 'w07_animation.dart';
 import 'w07_cupertino.dart';
+import 'w08_listenable_builder.dart';
+import 'w08_inherited.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -50,6 +52,16 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w07',
     title: 'วิดเจ็ต Cupertino',
     builder: (_) => const CupertinoDemo(),
+  ),
+  (
+    week: 'w08',
+    title: 'ChangeNotifier + ListenableBuilder',
+    builder: (_) => const ListenableDemo(),
+  ),
+  (
+    week: 'w08',
+    title: 'InheritedWidget',
+    builder: (_) => const InheritedDemo(),
   ),
 ];
 

@@ -1,6 +1,5 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/demos/w04_layout.dart';
-import 'package:cafe_order/main.dart';
 import 'package:cafe_order/ui/menu/menu_card.dart';
 import 'package:cafe_order/ui/menu/menu_list.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ import 'helpers.dart';
 
 void main() {
   testWidgets('ListView.builder สร้างแถวเมนูเมื่อเลื่อนถึง', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     final list = find
         .descendant(
           of: find.byType(MenuList),

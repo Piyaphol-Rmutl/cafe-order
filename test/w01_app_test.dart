@@ -1,15 +1,16 @@
-import 'package:cafe_order/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'helpers.dart';
+
 void main() {
   testWidgets('หน้าแรกแสดงชื่อแอป', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     expect(find.text('Café Order'), findsOneWidget);
   });
 
   testWidgets('เมนูผู้พัฒนา → สาธิตวงจรชีวิตบันทึกสถานะ', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     await tester.tap(find.byTooltip('เมนูผู้พัฒนา'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('วงจรชีวิตของแอป'));
@@ -24,7 +25,7 @@ void main() {
   });
 
   testWidgets('สาธิต Hot Reload: กดปุ่มแล้วตัวเลขเพิ่ม', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     await tester.tap(find.byTooltip('เมนูผู้พัฒนา'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Hot Reload กับสถานะ'));

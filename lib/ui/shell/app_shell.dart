@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../demos/demo_menu.dart';
+import '../../state/cart_model.dart';
 import '../l10n_ext.dart';
 
 /// โครงของแอป: แถบนำทาง 3 แท็บ (เมนู ตะกร้า ร้าน) + Drawer
@@ -25,6 +27,13 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final wide = MediaQuery.sizeOf(context).width >= 840;
     final l10n = context.l10n;
+    // select: build ใหม่เฉพาะเมื่อ "จำนวน" เปลี่ยน ไม่ใช่ทุกครั้งที่ตะกร้าเปลี่ยน
+    final count = context.select<CartModel, int>((cart) => cart.count);
+    final cartIcon = Badge.count(
+      count: count,
+      isLabelVisible: count > 0,
+      child: const Icon(Icons.shopping_cart),
+    );
     return Scaffold(
       // แท็บร้านมี SliverAppBar.large ของตัวเอง จึงไม่แสดงแถบหัวของเชลล์ซ้ำ
       appBar: _index == 2
@@ -47,7 +56,7 @@ class AppShell extends StatelessWidget {
                       label: Text(l10n.tabMenu),
                     ),
                     NavigationRailDestination(
-                      icon: const Icon(Icons.shopping_cart),
+                      icon: cartIcon,
                       label: Text(l10n.tabCart),
                     ),
                     NavigationRailDestination(
@@ -71,10 +80,7 @@ class AppShell extends StatelessWidget {
                   icon: const Icon(Icons.local_cafe),
                   label: l10n.tabMenu,
                 ),
-                NavigationDestination(
-                  icon: const Icon(Icons.shopping_cart),
-                  label: l10n.tabCart,
-                ),
+                NavigationDestination(icon: cartIcon, label: l10n.tabCart),
                 NavigationDestination(
                   icon: const Icon(Icons.storefront),
                   label: l10n.tabShop,

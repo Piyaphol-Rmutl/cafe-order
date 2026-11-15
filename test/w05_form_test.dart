@@ -1,7 +1,6 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:cafe_order/demos/w05_gestures.dart';
 import 'package:cafe_order/demos/w05_state_lifecycle.dart';
-import 'package:cafe_order/main.dart';
 import 'package:cafe_order/ui/customize/customize_page.dart';
 import 'package:cafe_order/ui/customize/validators.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +106,7 @@ void main() {
   });
 
   testWidgets('แตะเมนู → หน้าปรับแต่ง, กดค้าง → คำอธิบาย', (tester) async {
-    await tester.pumpWidget(const CafeOrderApp());
+    await tester.pumpWidget(cafeApp());
     final americano = find.text('อเมริกาโน');
     await tester.scrollUntilVisible(
       americano,
