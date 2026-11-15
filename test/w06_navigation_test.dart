@@ -6,6 +6,8 @@ import 'package:cafe_order/ui/menu/menu_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'helpers.dart';
+
 /// เปิดเมนู กรอกชื่อ แล้วใส่ตะกร้า (ใช้ซ้ำหลายเทสต์)
 Future<void> addToCart(WidgetTester tester, String menuName) async {
   await tester.tap(find.text(menuName).first);
@@ -102,13 +104,15 @@ void main() {
 
   testWidgets('Drawer เปิดได้', (tester) async {
     await tester.pumpWidget(const CafeOrderApp());
-    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.tap(
+      find.byIcon(Icons.menu),
+    ); // tooltip เป็นภาษาไทยตั้งแต่สัปดาห์ 7
     await tester.pumpAndSettle();
     expect(find.byType(Drawer), findsOneWidget);
   });
 
   testWidgets('สาธิต Navigator: push แล้วรับผลจาก pop', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: NavigatorDemo()));
+    await tester.pumpWidget(testApp(NavigatorDemo()));
     await tester.tap(find.text('เลือกขนาดแก้ว'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('ขนาด L'));

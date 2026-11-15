@@ -7,7 +7,9 @@ import 'package:cafe_order/ui/customize/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Widget _wrap(Widget child) => MaterialApp(home: child);
+import 'helpers.dart';
+
+Widget _wrap(Widget child) => testApp(child);
 
 /// เลื่อนรายการในฟอร์มจนเห็นแล้วจึงแตะ
 Future<void> _tapInForm(WidgetTester tester, Finder finder) async {
@@ -54,8 +56,8 @@ void main() {
   ) async {
     OrderItem? result;
     await tester.pumpWidget(
-      MaterialApp(
-        home: Builder(
+      testApp(
+        Builder(
           builder: (context) => TextButton(
             onPressed: () async {
               result = await Navigator.of(context).push<OrderItem>(

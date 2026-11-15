@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../demos/demo_menu.dart';
+import '../l10n_ext.dart';
 
 /// โครงของแอป: แถบนำทาง 3 แท็บ (เมนู ตะกร้า ร้าน) + Drawer
 /// จอกว้าง ≥ 840 ใช้ NavigationRail ด้านซ้าย จอแคบใช้ NavigationBar ด้านล่าง
@@ -23,12 +24,13 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wide = MediaQuery.sizeOf(context).width >= 840;
+    final l10n = context.l10n;
     return Scaffold(
       // แท็บร้านมี SliverAppBar.large ของตัวเอง จึงไม่แสดงแถบหัวของเชลล์ซ้ำ
       appBar: _index == 2
           ? null
           : AppBar(
-              title: const Text('Café Order'),
+              title: Text(l10n.appTitle),
               actions: const [DemoMenuButton()],
             ),
       drawer: const _AppDrawer(),
@@ -39,18 +41,18 @@ class AppShell extends StatelessWidget {
                   selectedIndex: _index,
                   onDestinationSelected: (i) => _go(context, i),
                   labelType: NavigationRailLabelType.all,
-                  destinations: const [
+                  destinations: [
                     NavigationRailDestination(
-                      icon: Icon(Icons.local_cafe),
-                      label: Text('เมนู'),
+                      icon: const Icon(Icons.local_cafe),
+                      label: Text(l10n.tabMenu),
                     ),
                     NavigationRailDestination(
-                      icon: Icon(Icons.shopping_cart),
-                      label: Text('ตะกร้า'),
+                      icon: const Icon(Icons.shopping_cart),
+                      label: Text(l10n.tabCart),
                     ),
                     NavigationRailDestination(
-                      icon: Icon(Icons.storefront),
-                      label: Text('ร้าน'),
+                      icon: const Icon(Icons.storefront),
+                      label: Text(l10n.tabShop),
                     ),
                   ],
                 ),
@@ -64,18 +66,18 @@ class AppShell extends StatelessWidget {
           : NavigationBar(
               selectedIndex: _index,
               onDestinationSelected: (i) => _go(context, i),
-              destinations: const [
+              destinations: [
                 NavigationDestination(
-                  icon: Icon(Icons.local_cafe),
-                  label: 'เมนู',
+                  icon: const Icon(Icons.local_cafe),
+                  label: l10n.tabMenu,
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'ตะกร้า',
+                  icon: const Icon(Icons.shopping_cart),
+                  label: l10n.tabCart,
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.storefront),
-                  label: 'ร้าน',
+                  icon: const Icon(Icons.storefront),
+                  label: l10n.tabShop,
                 ),
               ],
             ),
@@ -94,10 +96,18 @@ class _AppDrawer extends StatelessWidget {
           DrawerHeader(child: Image.asset('assets/images/logo.png')),
           ListTile(
             leading: const Icon(Icons.local_cafe),
-            title: const Text('เมนู'),
+            title: Text(context.l10n.tabMenu),
             onTap: () {
               Navigator.of(context).pop(); // ปิด Drawer ก่อน
               context.go('/menu');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(context.l10n.settings),
+            onTap: () {
+              Navigator.of(context).pop();
+              context.push('/settings');
             },
           ),
           ListTile(

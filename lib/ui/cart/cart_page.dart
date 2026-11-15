@@ -2,6 +2,8 @@ import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n_ext.dart';
+
 /// แท็บตะกร้า (สัปดาห์ 6): รับรายการผ่านคอนสตรักเตอร์จากรากของแอป
 /// ข้อจำกัด: ลบในหน้านี้แล้ว หน้าอื่นไม่รู้ (แก้ด้วย ChangeNotifier ในสัปดาห์ 8)
 class CartPage extends StatefulWidget {
@@ -22,15 +24,16 @@ class _CartPageState extends State<CartPage> {
       items: [..._items],
     );
     setState(_items.clear);
+    final l10n = context.l10n;
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('สั่งซื้อ ${order.id} แล้ว'),
-        content: Text('${order.summary.cups} รายการ รวม ${order.priceText}'),
+        title: Text(l10n.orderPlaced(order.id)),
+        content: Text(l10n.orderSummary(order.summary.cups, order.total)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ตกลง'),
+            child: Text(l10n.ok),
           ),
         ],
       ),
@@ -41,7 +44,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     if (_items.isEmpty) {
-      return const Center(child: Text('ตะกร้ายังว่าง'));
+      return Center(child: Text(context.l10n.cartEmpty));
     }
     final total = _items.fold(0, (sum, i) => sum + i.total);
     return Column(
@@ -52,7 +55,7 @@ class _CartPageState extends State<CartPage> {
             itemBuilder: (context, index) {
               final line = _items[index];
               return ListTile(
-                title: Text('${line.item.name} ×${line.quantity}'),
+                title: Text('${line.item.nameFor(context)} ×${line.quantity}'),
                 subtitle: Text(
                   [
                     line.summary,
@@ -62,9 +65,11 @@ class _CartPageState extends State<CartPage> {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(line.priceText),
+                    Text(context.l10n.price(line.total)),
                     IconButton(
-                      tooltip: 'ลบ ${line.item.name}',
+                      tooltip: context.l10n.removeItem(
+                        line.item.nameFor(context),
+                      ),
                       icon: const Icon(Icons.delete_outline),
                       onPressed: () => setState(() => _items.removeAt(index)),
                     ),
@@ -78,7 +83,7 @@ class _CartPageState extends State<CartPage> {
           padding: const EdgeInsets.all(16),
           child: FilledButton(
             onPressed: _checkout,
-            child: Text('สั่งซื้อ · $total บาท'),
+            child: Text(context.l10n.checkout(total)),
           ),
         ),
       ],

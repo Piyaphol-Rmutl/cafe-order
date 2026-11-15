@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../customize/customize_page.dart';
+import '../l10n_ext.dart';
 import 'menu_list.dart';
 
 /// แท็บเมนู: TabBar แยกตามหมวด + เลย์เอาต์ที่ปรับตามความกว้าง
@@ -21,7 +22,9 @@ class MenuPage extends StatelessWidget {
   void _added(BuildContext context, OrderItem result) {
     onAdd(result);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('เพิ่ม ${result.item.name} ลงตะกร้าแล้ว')),
+      SnackBar(
+        content: Text(context.l10n.addedToCart(result.item.nameFor(context))),
+      ),
     );
   }
 
@@ -34,7 +37,10 @@ class MenuPage extends StatelessWidget {
         children: [
           TabBar(
             isScrollable: true,
-            tabs: [for (final c in tabs) Tab(text: c?.label ?? 'ทั้งหมด')],
+            tabs: [
+              for (final c in tabs)
+                Tab(text: c?.labelFor(context) ?? context.l10n.allCategories),
+            ],
           ),
           Expanded(
             child: TabBarView(
@@ -120,7 +126,7 @@ class _MenuBodyState extends State<_MenuBody> {
       context: context,
       builder: (_) => ListTile(
         contentPadding: const EdgeInsets.all(24),
-        title: Text(item.name),
+        title: Text(item.nameFor(context)),
         subtitle: Text(item.description),
       ),
     );

@@ -6,6 +6,8 @@ import 'w04_layout.dart';
 import 'w05_gestures.dart';
 import 'w05_state_lifecycle.dart';
 import 'w06_navigator.dart';
+import 'w07_animation.dart';
+import 'w07_cupertino.dart';
 
 /// รายการจุดสาธิตที่ไม่ได้เป็นส่วนของแอปจริง (เปิดจากเมนูผู้พัฒนา)
 final List<({String week, String title, WidgetBuilder builder})> demos = [
@@ -38,6 +40,16 @@ final List<({String week, String title, WidgetBuilder builder})> demos = [
     week: 'w06',
     title: 'Navigator push/pop รับผลลัพธ์',
     builder: (_) => const NavigatorDemo(),
+  ),
+  (
+    week: 'w07',
+    title: 'AnimationController (Explicit)',
+    builder: (_) => const AnimationDemo(),
+  ),
+  (
+    week: 'w07',
+    title: 'วิดเจ็ต Cupertino',
+    builder: (_) => const CupertinoDemo(),
   ),
 ];
 

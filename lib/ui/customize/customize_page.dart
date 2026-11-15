@@ -1,6 +1,7 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n_ext.dart';
 import '../menu/menu_image.dart';
 import 'validators.dart';
 
@@ -70,8 +71,9 @@ class _CustomizePageState extends State<CustomizePage> {
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(item.name)),
+      appBar: AppBar(title: Text(item.nameFor(context))),
       body: Form(
         key: _formKey,
         // ใช้ SingleChildScrollView + Column (ไม่ใช่ ListView) เพื่อให้ทุกช่อง
@@ -84,12 +86,18 @@ class _CustomizePageState extends State<CustomizePage> {
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: MenuImage(item: item, size: 160),
+                  // Hero เฉพาะแบบเต็มหน้า (โหมดสองบานมีรูปเดียวกันในกริดแล้ว)
+                  child: MenuImage(
+                    item: item,
+                    size: 160,
+                    hero: widget.onSubmit == null,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
               if (item.isDrink) ...[
-                const _Label('ขนาดแก้ว'),
+                _Label(l10n.cupSize),
+                CupPreview(size: _size),
                 SegmentedButton<CupSize>(
                   segments: [
                     for (final s in CupSize.values)
@@ -101,7 +109,7 @@ class _CustomizePageState extends State<CustomizePage> {
                   selected: {_size},
                   onSelectionChanged: (s) => setState(() => _size = s.first),
                 ),
-                const _Label('ความหวาน'),
+                _Label(l10n.sweetness),
                 Wrap(
                   spacing: 8,
                   children: [
@@ -113,7 +121,13 @@ class _CustomizePageState extends State<CustomizePage> {
                       ),
                   ],
                 ),
-                const _Label('ท็อปปิง'),
+                // แอนิเมชัน Implicit: เปลี่ยน opacity แล้ว Flutter ไล่ค่าให้เอง
+                AnimatedOpacity(
+                  opacity: _sweetness.percent <= 50 ? 1 : 0,
+                  duration: const Duration(milliseconds: 400),
+                  child: Text(l10n.lessSugarHint),
+                ),
+                _Label(l10n.toppings),
                 for (final t in allToppings)
                   CheckboxListTile(
                     title: Text(t.name),
@@ -124,7 +138,7 @@ class _CustomizePageState extends State<CustomizePage> {
                     }),
                   ),
               ],
-              const _Label('จำนวน'),
+              _Label(l10n.quantity),
               Row(
                 children: [
                   IconButton.outlined(
@@ -157,8 +171,8 @@ class _CustomizePageState extends State<CustomizePage> {
                 focusNode: _nameFocus,
                 // เผื่อพื้นที่ใต้ช่องตอนเลื่อนมาให้เห็น ให้บรรทัดข้อความแจ้งพ้นปุ่มด้านล่าง
                 scrollPadding: const EdgeInsets.fromLTRB(20, 20, 20, 64),
-                decoration: const InputDecoration(
-                  labelText: 'ชื่อบนแก้ว *',
+                decoration: InputDecoration(
+                  labelText: l10n.cupName,
                   border: OutlineInputBorder(),
                 ),
                 validator: validateCupName,
@@ -167,8 +181,8 @@ class _CustomizePageState extends State<CustomizePage> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _noteController,
-                decoration: const InputDecoration(
-                  labelText: 'หมายเหตุถึงบาริสต้า',
+                decoration: InputDecoration(
+                  labelText: l10n.note,
                   border: OutlineInputBorder(),
                 ),
                 maxLength: 50,
@@ -185,7 +199,7 @@ class _CustomizePageState extends State<CustomizePage> {
           child: FilledButton.icon(
             onPressed: _submit,
             icon: const Icon(Icons.add_shopping_cart),
-            label: Text('ใส่ตะกร้า · ${_draft.priceText}'),
+            label: Text(l10n.addToCart(_draft.total)),
           ),
         ),
       ),
@@ -202,4 +216,36 @@ class _Label extends StatelessWidget {
     padding: const EdgeInsets.only(top: 16, bottom: 8),
     child: Text(text, style: Theme.of(context).textTheme.titleMedium),
   );
+}
+
+/// ภาพแก้วที่สูงขึ้นตามขนาดที่เลือก: AnimatedContainer ไล่ค่าความสูงและสีให้เอง
+class CupPreview extends StatelessWidget {
+  const CupPreview({super.key, required this.size});
+
+  final CupSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Center(
+      child: SizedBox(
+        height: 110,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutBack,
+            width: 40.0 + size.index * 12,
+            height: 60.0 + size.index * 25,
+            decoration: BoxDecoration(
+              color: size == CupSize.large ? scheme.primary : scheme.secondary,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(12),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

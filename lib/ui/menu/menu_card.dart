@@ -1,6 +1,7 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n_ext.dart';
 import 'menu_image.dart';
 
 /// แถวเมนูสำหรับมุมมองรายการ (ListView)
@@ -15,36 +16,48 @@ class MenuTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      // InkWell ตอบสนองการแตะพร้อมเอฟเฟกต์ระลอกน้ำ (ripple)
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: Row(
-          children: [
-            MenuImage(item: item, size: 72),
-            const SizedBox(width: 12),
-            // Expanded ให้ข้อความใช้พื้นที่ที่เหลือ ข้อความยาวจึงไม่ล้น (Overflow)
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.name, style: textTheme.titleMedium),
-                  Text(
-                    item.description,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodySmall,
-                  ),
-                ],
+    // Semantics: โปรแกรมอ่านจออ่านเป็นปุ่มเดียว "ลาเต้ ราคา 55 บาท"
+    // แทนการอ่านข้อความย่อยทีละชิ้น
+    return Semantics(
+      button: true,
+      label: context.l10n.menuSemantics(item.nameFor(context), item.price),
+      excludeSemantics: true,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        // InkWell ตอบสนองการแตะพร้อมเอฟเฟกต์ระลอกน้ำ (ripple)
+        child: InkWell(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          child: Row(
+            children: [
+              MenuImage(item: item, size: 72, hero: true),
+              const SizedBox(width: 12),
+              // Expanded ให้ข้อความใช้พื้นที่ที่เหลือ ข้อความยาวจึงไม่ล้น (Overflow)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.nameFor(context), style: textTheme.titleMedium),
+                    Text(
+                      item.description,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text('${item.price} บาท', style: textTheme.titleSmall),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  context.l10n.price(item.price),
+                  style: textTheme.titleSmall,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -72,7 +85,7 @@ class MenuGridCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  MenuImage(item: item),
+                  MenuImage(item: item, hero: true),
                   Positioned(
                     top: 8,
                     left: 8,
@@ -86,7 +99,7 @@ class MenuGridCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        item.category.label,
+                        item.category.labelFor(context),
                         style: TextStyle(color: scheme.onPrimary, fontSize: 12),
                       ),
                     ),
@@ -99,7 +112,10 @@ class MenuGridCard extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(item.name, overflow: TextOverflow.ellipsis),
+                    child: Text(
+                      item.nameFor(context),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Text('${item.price}.-'),
                 ],

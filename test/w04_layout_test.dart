@@ -6,6 +6,8 @@ import 'package:cafe_order/ui/menu/menu_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'helpers.dart';
+
 void main() {
   testWidgets('ListView.builder สร้างแถวเมนูเมื่อเลื่อนถึง', (tester) async {
     await tester.pumpWidget(const CafeOrderApp());
@@ -29,9 +31,7 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: MenuTile(item: sampleMenu.first)),
-      ),
+      testApp(Scaffold(body: MenuTile(item: sampleMenu.first))),
     );
     expect(tester.takeException(), isNull);
   });
@@ -42,25 +42,19 @@ void main() {
     addTearDown(tester.view.reset);
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: BrokenMenuRow(item: sampleMenu.first)),
-      ),
+      testApp(Scaffold(body: BrokenMenuRow(item: sampleMenu.first))),
     );
     expect(tester.takeException(), isFlutterError);
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: FixedMenuRow(item: sampleMenu.first)),
-      ),
+      testApp(Scaffold(body: FixedMenuRow(item: sampleMenu.first))),
     );
     expect(tester.takeException(), isNull);
   });
 
   testWidgets('MenuGrid แสดงการ์ดพร้อมป้ายหมวด (Stack)', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(body: MenuGrid(menu: sampleMenu)),
-      ),
+      testApp(Scaffold(body: MenuGrid(menu: sampleMenu))),
     );
     expect(find.byType(MenuGridCard), findsWidgets);
     expect(find.text('กาแฟ'), findsWidgets);
