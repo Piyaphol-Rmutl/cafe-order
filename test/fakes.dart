@@ -1,4 +1,5 @@
 import 'package:cafe_core/cafe_core.dart';
+import 'package:cafe_order/data/repositories/branch_repository.dart';
 import 'package:cafe_order/data/repositories/favorite_repository.dart';
 import 'package:cafe_order/data/repositories/menu_repository.dart';
 import 'package:cafe_order/data/repositories/order_repository.dart';
@@ -49,4 +50,16 @@ class InMemoryFavoriteRepository implements FavoriteRepository {
   @override
   Future<void> setFavorite(String menuId, bool favorite) async =>
       favorite ? ids.add(menuId) : ids.remove(menuId);
+}
+
+class FakeBranchRepository implements BranchRepository {
+  FakeBranchRepository({this.fail = false});
+
+  bool fail;
+
+  @override
+  Future<List<Branch>> fetchBranches() async {
+    if (fail) throw Exception('offline');
+    return sampleBranches;
+  }
 }

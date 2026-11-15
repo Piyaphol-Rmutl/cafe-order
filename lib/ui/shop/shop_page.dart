@@ -1,17 +1,49 @@
 import 'package:cafe_core/cafe_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../data/repositories/branch_repository.dart';
+import '../l10n_ext.dart';
 import 'info_row.dart';
 
 /// แท็บ "ร้าน": CustomScrollView รวม Sliver หลายชนิดให้เลื่อนเป็นผืนเดียว
-class ShopPage extends StatelessWidget {
+/// สัปดาห์ 11: รายชื่อสาขามาจากเซิร์ฟเวอร์ แสดงด้วย FutureBuilder
+class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
 
+  @override
+  State<ShopPage> createState() => _ShopPageState();
+}
+
+class _ShopPageState extends State<ShopPage> {
   static const _hours = {
     'จันทร์–ศุกร์': '07:30–17:00',
     'เสาร์': '09:00–15:00',
     'อาทิตย์': 'ปิด',
   };
+
+  // สร้าง Future ครั้งเดียวใน initState (ถ้าสร้างใน build จะยิงคำร้องขอใหม่ทุกครั้งที่ build)
+  late Future<List<Branch>> _branches;
+
+  @override
+  void initState() {
+    super.initState();
+    _branches = _load();
+  }
+
+  Future<List<Branch>> _load() {
+    final future = context.read<BranchRepository>().fetchBranches();
+    // FutureBuilder อยู่ใน SliverList ซึ่งสร้างเมื่อเลื่อนถึง ถ้า Future ล้มเหลวก่อน
+    // จะเป็น "ข้อผิดพลาดที่ไม่มีใครจัดการ" ignore() บอกว่าเรารู้แล้ว
+    // (FutureBuilder ยังได้รับข้อผิดพลาดตามปกติเมื่อถูกสร้าง)
+    future.ignore();
+    return future;
+  }
+
+  // ใช้ { } ไม่ใช่ => : ลูกศรจะคืน Future ออกจาก setState ซึ่ง Flutter ไม่อนุญาต
+  void _retry() => setState(() {
+    _branches = _load();
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +56,39 @@ class ShopPage extends StatelessWidget {
           children: [
             for (final e in _hours.entries)
               ListTile(title: Text(e.key), trailing: Text(e.value)),
+            const Divider(),
+            // FutureBuilder: แสดงตามสถานะของ Future (กำลังโหลด / ข้อมูล / ผิดพลาด)
+            FutureBuilder<List<Branch>>(
+              future: _branches,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return ListTile(
+                    leading: const Icon(Icons.cloud_off),
+                    title: Text('โหลดสาขาไม่สำเร็จ: ${snapshot.error}'),
+                    trailing: TextButton(
+                      onPressed: _retry,
+                      child: Text(context.l10n.retry),
+                    ),
+                  );
+                }
+                return Column(
+                  children: [
+                    for (final b in snapshot.data!)
+                      ListTile(
+                        leading: const Icon(Icons.storefront),
+                        title: Text(b.name),
+                        subtitle: Text(b.hours),
+                      ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ],

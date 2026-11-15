@@ -3,10 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'app_dependencies.dart';
+import 'config.dart';
+import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
 import 'data/repositories/settings_repository.dart';
+import 'data/services/api_service.dart';
 import 'data/services/database_service.dart';
 import 'data/services/file_service.dart';
 import 'data/services/prefs_service.dart';
@@ -22,12 +25,15 @@ Future<void> main() async {
   final db = await DatabaseService.open();
   final prefs = await PrefsService.create();
   final files = FileService();
+  final api = ApiService(baseUrl: apiBaseUrl); // สัปดาห์ 11
 
   runApp(
     buildApp(
       AppDependencies(
-        menu: LocalMenuRepository(),
-        orders: LocalOrderRepository(db, files),
+        // สลับ implementation ที่นี่ที่เดียว UI ไม่ต้องแก้
+        menu: ApiMenuRepository(api),
+        orders: ApiOrderRepository(api, LocalOrderRepository(db, files)),
+        branches: ApiBranchRepository(api),
         favorites: SqliteFavoriteRepository(db),
         settings: SettingsRepository(prefs),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import 'data/repositories/branch_repository.dart';
 import 'data/repositories/favorite_repository.dart';
 import 'data/repositories/menu_repository.dart';
 import 'data/repositories/order_repository.dart';
@@ -17,12 +18,14 @@ class AppDependencies {
     required this.orders,
     required this.favorites,
     required this.settings,
+    required this.branches,
   });
 
   final MenuRepository menu;
   final OrderRepository orders;
   final FavoriteRepository favorites;
   final SettingsRepository settings;
+  final BranchRepository branches;
 }
 
 /// ประกอบแอป: วาง Repository และ ViewModel ระดับแอปไว้เหนือ CafeOrderApp
@@ -32,6 +35,7 @@ Widget buildApp(AppDependencies deps, {String initialLocation = '/menu'}) {
       // ชั้นข้อมูล: Provider ธรรมดา (ไม่เปลี่ยนค่า)
       Provider<MenuRepository>.value(value: deps.menu),
       Provider<OrderRepository>.value(value: deps.orders),
+      Provider<BranchRepository>.value(value: deps.branches),
       // ชั้น ViewModel ระดับแอป
       ChangeNotifierProvider(
         create: (_) => MenuViewModel(deps.menu, deps.favorites)..load(),
